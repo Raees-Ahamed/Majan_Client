@@ -15,6 +15,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Footer from "../Components/Footer/Footer";
 import {useHistory} from "react-router-dom";
 
+import axios from 'axios';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         height: '100vh',
