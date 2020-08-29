@@ -73,6 +73,8 @@ const Checkout = () => {
 
     const handleNext = () => {
         setActiveStep(activeStep + 1);
+        if((activeStep + 1) == 3){
+        }
     };
 
     const handleBack = () => {
