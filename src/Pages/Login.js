@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,7 +14,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Footer from "../Components/Footer/Footer";
 import {useHistory} from "react-router-dom";
-
 import axios from 'axios';
 import * as AppGlobal from "../AppHelp/AppGlobal";
 
@@ -53,6 +52,18 @@ const Login =() => {
     const classes = useStyles();
     let history = useHistory();
 
+    const [getUserName, setUserName] = useState({userName: ''});
+    const [getPwd, setPwd] = useState({password: ''});
+
+    const loginHandler = async () => {
+        const userObj = {
+            userName: getUserName,
+            password: getPwd
+        }
+        console.log(userObj);
+        let result = await axios.get(AppGlobal.apiBaseUrl + `user/${userObj.userName}/${userObj.password}`);
+    }
+
     return (
         <Grid container component="main" className={classes.root}>
             <CssBaseline />
@@ -76,6 +87,7 @@ const Login =() => {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            onChange={event => setUserName(event.target.value)}
                         />
                         <TextField
                             variant="outlined"
@@ -87,18 +99,19 @@ const Login =() => {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            onChange={event => setPwd(event.target.value)}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"
                         />
                         <Button
-                            type="submit"
+                            type="button"
                             fullWidth
                             variant="contained"
                             color="primary"
                             className={classes.submit}
-                            onClick={() =>{ onLogin(); } }
+                            onClick={() => loginHandler()}
                         >
                             Sign In
                         </Button>
@@ -122,20 +135,6 @@ const Login =() => {
             </Grid>
         </Grid>
     );
-}
-
-
-
-
-
-
-const onLogin= async () => {
-    const userObj = {
-        userName: 'admin',
-        password: '123'
-    }    
-    let result = await axios.get(AppGlobal.apiBaseUrl + `Login/${userObj.userName}/${userObj.password}`);
-    console.log(result);
 }
 
 export default Login;

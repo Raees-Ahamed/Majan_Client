@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 import Footer from "../Components/Footer/Footer";
 import {useHistory} from "react-router-dom";
 import axios from 'axios';
+import * as AppGlobal from "../AppHelp/AppGlobal";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -42,7 +43,7 @@ const Register = () => {
     const [getLastNameValue, setLastNameValue] = useState({lastName : ''})
     const [getEmailValue, setEmailValue] = useState({email : ''})
     const [getPwdValue, setPwdValue] = useState({password : ''})
-    const [getConfPwdValue, setConfPwdValue] = useState({ConfPassword : ''})
+    const [getConfPwdValue, setConfPwdValue] = useState({confPassword : ''})
 
     const classes = useStyles();
     let history = useHistory();
@@ -52,10 +53,17 @@ const Register = () => {
             firstName : getFirstNameValue,
             lastName : getLastNameValue,
             email : getEmailValue,
-            pwd : getPwdValue,
-            confPwd : getConfPwdValue,
+            password : getPwdValue,
+            confPassword : getConfPwdValue,
+            usertype: '1'
         }
         console.log(formData);
+
+        axios.post(AppGlobal.apiBaseUrl+'user/', { formData })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+            })
     }
 
     return (

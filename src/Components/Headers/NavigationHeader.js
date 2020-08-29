@@ -46,16 +46,25 @@ const NavigationHeader = () => {
                         <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() =>history.push("/shop")}>
                             Shop
                         </Link>
+                        <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() =>history.push("/login")}>
+                            Login
+                        </Link>
+                        <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() =>history.push("/register")}>
+                            Register
+                        </Link>
+                        <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() =>history.push("/checkout")}>
+                            Checkout
+                        </Link>
                     </nav>
-                    <Button href="javascript:void(0)" color="primary" variant="outlined" className={classes.link} onClick={()=>history.push("/login")}>
-                        Login
-                    </Button>
-                    <Button href="javascript:void(0)" color="primary" variant="outlined" className={classes.link} onClick={()=>history.push("/register")}>
-                        Register
-                    </Button>
-                    <Button href="javascript:void(0)" color="primary" variant="outlined" className={classes.link} onClick={()=>history.push("/checkout")}>
-                        Checkout
-                    </Button>
+                    {/*<Button href="javascript:void(0)" color="primary" variant="outlined" className={classes.link} onClick={()=>history.push("/login")}>*/}
+                    {/*    Login*/}
+                    {/*</Button>*/}
+                    {/*<Button href="javascript:void(0)" color="primary" variant="outlined" className={classes.link} onClick={()=>history.push("/register")}>*/}
+                    {/*    Register*/}
+                    {/*</Button>*/}
+                    {/*<Button href="javascript:void(0)" color="primary" variant="outlined" className={classes.link} onClick={()=>history.push("/checkout")}>*/}
+                    {/*    Checkout*/}
+                    {/*</Button>*/}
                 </Toolbar>
             </AppBar>
         </React.Fragment>
