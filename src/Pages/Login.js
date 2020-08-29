@@ -130,18 +130,12 @@ const Login =() => {
 
 
 const onLogin= async () => {
-
-    debugger;
     const userObj = {
         userName: 'admin',
         password: '123'
-    }
-
-    
+    }    
     let result = await axios.get(AppGlobal.apiBaseUrl + `Login/${userObj.userName}/${userObj.password}`);
     console.log(result);
-
-
 }
 
 export default Login;
