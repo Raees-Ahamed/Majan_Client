@@ -13,7 +13,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Footer from "../Components/Footer/Footer";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
+
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -110,12 +112,13 @@ const Register = () => {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+
                     >
                         Sign Up
                     </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
-                            <Link href="javascript:void(0)" variant="body2" onClick={()=>history.push("/login")}>
+                            <Link href="javascript:void(0)" variant="body2" onClick={() => history.push("/login")}>
                                 Already have an account? Sign in
                             </Link>
                         </Grid>
@@ -128,5 +131,11 @@ const Register = () => {
         </Container>
     );
 }
+
+
+
+
+
+
 
 export default Register;

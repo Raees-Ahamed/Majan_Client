@@ -16,6 +16,7 @@ import Footer from "../Components/Footer/Footer";
 import {useHistory} from "react-router-dom";
 
 import axios from 'axios';
+import * as AppGlobal from "../AppHelp/AppGlobal";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -97,6 +98,7 @@ const Login =() => {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
+                            onClick={() =>{ onLogin(); } }
                         >
                             Sign In
                         </Button>
@@ -120,6 +122,26 @@ const Login =() => {
             </Grid>
         </Grid>
     );
+}
+
+
+
+
+
+
+const onLogin= async () => {
+
+    debugger;
+    const userObj = {
+        userName: 'admin',
+        password: '123'
+    }
+
+    
+    let result = await axios.get(AppGlobal.apiBaseUrl + `Login/${userObj.userName}/${userObj.password}`);
+    console.log(result);
+
+
 }
 
 export default Login;
