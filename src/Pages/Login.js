@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,7 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Footer from "../Components/Footer/Footer";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import * as AppGlobal from "../AppHelp/AppGlobal";
 
@@ -48,20 +48,20 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Login =() => {
+const Login = () => {
     const classes = useStyles();
     let history = useHistory();
 
-    const [getUserName, setUserName] = useState({userName: ''});
-    const [getPwd, setPwd] = useState({password: ''});
+    const [getUserName, setUserName] = useState({ userName: '' });
+    const [getPwd, setPwd] = useState({ password: '' });
 
     const loginHandler = async () => {
         const userObj = {
-            userName: getUserName,
+            email: getUserName,
             password: getPwd
         }
-        console.log(userObj);
-        let result = await axios.get(AppGlobal.apiBaseUrl + `user/${userObj.userName}/${userObj.password}`);
+        let result1 = await axios.get(AppGlobal.apiBaseUrl + `User/${userObj.email}/${userObj.password}`);
+        console.log(result1);
     }
 
     return (
@@ -122,7 +122,7 @@ const Login =() => {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="javascript:void(0)" variant="body2" onClick={()=>history.push("/register")}>
+                                <Link href="javascript:void(0)" variant="body2" onClick={() => history.push("/register")}>
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>

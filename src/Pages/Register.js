@@ -55,11 +55,11 @@ const Register = () => {
             email : getEmailValue,
             password : getPwdValue,
             confPassword : getConfPwdValue,
-            usertype: '1'
+            usertype: 1
         }
         console.log(formData);
 
-        axios.post(AppGlobal.apiBaseUrl+'user/', { formData })
+        axios.post(AppGlobal.apiBaseUrl+'User/',  formData )
             .then(res => {
                 console.log(res);
                 console.log(res.data);
