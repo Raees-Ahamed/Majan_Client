@@ -85,7 +85,7 @@ const Checkout = () => {
             <AppBar position="absolute" color="default" className={classes.appBar}>
                 <Toolbar>
                     <Typography variant="h6" color="inherit" noWrap>
-                        Company name
+                        Majang.lk
                     </Typography>
                 </Toolbar>
             </AppBar>
