@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,9 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Footer from "../Components/Footer/Footer";
-import { useHistory } from "react-router-dom";
-
-
+import {useHistory} from "react-router-dom";
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -38,8 +37,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Register = () => {
+
+    const [getFirstNameValue, setFirstNameValue] = useState({firstName : ''})
+    const [getLastNameValue, setLastNameValue] = useState({lastName : ''})
+    const [getEmailValue, setEmailValue] = useState({email : ''})
+    const [getPwdValue, setPwdValue] = useState({password : ''})
+    const [getConfPwdValue, setConfPwdValue] = useState({ConfPassword : ''})
+
     const classes = useStyles();
     let history = useHistory();
+
+    const submitRegisterHandler = () =>{
+        let formData = {
+            firstName : getFirstNameValue,
+            lastName : getLastNameValue,
+            email : getEmailValue,
+            pwd : getPwdValue,
+            confPwd : getConfPwdValue,
+        }
+        console.log(formData);
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -63,6 +80,7 @@ const Register = () => {
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
+                                onChange={event => setFirstNameValue(event.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -74,6 +92,7 @@ const Register = () => {
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="lname"
+                                onChange={event => setLastNameValue((event.target.value))}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -85,6 +104,7 @@ const Register = () => {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                onChange={event => setEmailValue(event.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -97,22 +117,30 @@ const Register = () => {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                onChange={event => setPwdValue(event.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                label="I want to receive inspiration, marketing promotions and updates via email."
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                name="confPassword"
+                                label="confPassword"
+                                type="password"
+                                id="confPassword"
+                                autoComplete="current-password"
+                                onChange={event => setConfPwdValue(event.target.value)}
                             />
                         </Grid>
                     </Grid>
                     <Button
-                        type="submit"
+                        type="button"
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-
+                        onClick={()=>submitRegisterHandler()}
                     >
                         Sign Up
                     </Button>
