@@ -3,8 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -17,12 +15,8 @@ import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import * as AppGlobal from "../AppHelp/AppGlobal";
 import Alert from '@material-ui/lab/Alert';
-import { display } from '@material-ui/system';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        height: '100vh',
-    },
     image: {
         backgroundImage: 'url(https://source.unsplash.com/random)',
         backgroundRepeat: 'no-repeat',
@@ -53,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
         '& > * + *': {
           marginTop: theme.spacing(2),
         },
+        height: '100vh',
     }
 }));
 
@@ -69,19 +64,19 @@ const Login = () => {
             email: getUserName,
             password: getPwd
         }
+
         let result = await axios.get(AppGlobal.apiBaseUrl + `User/${userObj.email}/${userObj.password}`);
-        console.log(result);
 
         if(result.data.respondId == 0){
-            alert(result.data.description);
-            setUserStatus.status = result.data.respondId;
+            setErrorMsg({msg:result.data.description})
+            setUserStatus({status:0})
         }else{
-            alert(result.data.description);
-            setUserStatus.status = result.data.respondId;
+            setErrorMsg({msg:result.data.description})
+            setUserStatus({status:1})
         }
     }
 
-    const [getErrorMsg, setErrorMsg] = useState({msg:'sample error message'});
+    const [getErrorMsg, setErrorMsg] = useState({msg:''});
 
     return (
         <Grid container component="main" className={classes.root}>
@@ -120,15 +115,17 @@ const Login = () => {
                             autoComplete="current-password"
                             onChange={event => setPwd(event.target.value)}
                         />
-                        
-                        {/* <div className={classes.root} display="none">
-                            <Alert severity="error">{getErrorMsg.msg}</Alert>
-                        </div> */}
 
                         {
-                            getUserStatus.status == 0 ? '<div className={classes.root} display="none"><Alert severity="error">Testing</Alert></div>':null
+                            (getUserStatus.status == null) ? '' : (
+                                (getUserStatus.status == 1) ?
+                                <div>
+                                    <Alert severity="success">{getErrorMsg.msg}</Alert>
+                                </div> : <div>
+                                        <Alert severity="error">{getErrorMsg.msg}</Alert>
+                                    </div>
+                            )
                         }
-
 
                         <Button
                             type="button"
