@@ -16,6 +16,8 @@ import Footer from "../Components/Footer/Footer";
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import * as AppGlobal from "../AppHelp/AppGlobal";
+import Alert from '@material-ui/lab/Alert';
+import { display } from '@material-ui/system';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,6 +48,12 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    root: {
+        width: '100%',
+        '& > * + *': {
+          marginTop: theme.spacing(2),
+        },
+    }
 }));
 
 const Login = () => {
@@ -54,15 +62,26 @@ const Login = () => {
 
     const [getUserName, setUserName] = useState({ userName: '' });
     const [getPwd, setPwd] = useState({ password: '' });
+    const [getUserStatus,setUserStatus] = useState({ status: null });
 
     const loginHandler = async () => {
         const userObj = {
             email: getUserName,
             password: getPwd
         }
-        let result1 = await axios.get(AppGlobal.apiBaseUrl + `User/${userObj.email}/${userObj.password}`);
-        console.log(result1);
+        let result = await axios.get(AppGlobal.apiBaseUrl + `User/${userObj.email}/${userObj.password}`);
+        console.log(result);
+
+        if(result.data.respondId == 0){
+            alert(result.data.description);
+            setUserStatus.status = result.data.respondId;
+        }else{
+            alert(result.data.description);
+            setUserStatus.status = result.data.respondId;
+        }
     }
+
+    const [getErrorMsg, setErrorMsg] = useState({msg:'sample error message'});
 
     return (
         <Grid container component="main" className={classes.root}>
@@ -101,10 +120,16 @@ const Login = () => {
                             autoComplete="current-password"
                             onChange={event => setPwd(event.target.value)}
                         />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
+                        
+                        {/* <div className={classes.root} display="none">
+                            <Alert severity="error">{getErrorMsg.msg}</Alert>
+                        </div> */}
+
+                        {
+                            getUserStatus.status == 0 ? '<div className={classes.root} display="none"><Alert severity="error">Testing</Alert></div>':null
+                        }
+
+
                         <Button
                             type="button"
                             fullWidth
