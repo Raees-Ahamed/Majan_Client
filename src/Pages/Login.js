@@ -58,6 +58,7 @@ const Login = () => {
     const [getUserName, setUserName] = useState({ userName: '' });
     const [getPwd, setPwd] = useState({ password: '' });
     const [getUserStatus,setUserStatus] = useState({ status: null });
+    const [getErrorMsg, setErrorMsg] = useState({msg:''});
 
     const loginHandler = async () => {
         const userObj = {
@@ -75,8 +76,6 @@ const Login = () => {
             setUserStatus({status:1})
         }
     }
-
-    const [getErrorMsg, setErrorMsg] = useState({msg:''});
 
     return (
         <Grid container component="main" className={classes.root}>
