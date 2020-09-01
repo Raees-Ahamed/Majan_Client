@@ -65,7 +65,7 @@ const Login =() => {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <form className={classes.form} noValidate>
+                    <form className={classes.form} noValidate onSubmit={onLogin}>
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -98,7 +98,7 @@ const Login =() => {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
-                            onClick={() =>{ onLogin(); } }
+                            onClick={onLogin}
                         >
                             Sign In
                         </Button>
@@ -109,7 +109,7 @@ const Login =() => {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="javascript:void(0)" variant="body2" onClick={()=>history.push("/register")}>
+                                <Link href="#" variant="body2" onClick={()=>history.push("/register")}>
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>
@@ -134,7 +134,8 @@ const onLogin= async () => {
         userName: 'admin',
         password: '123'
     }    
-    let result = await axios.get(AppGlobal.apiBaseUrl + `Login/${userObj.userName}/${userObj.password}`);
+    //let result = await axios.get(AppGlobal.apiBaseUrl + `Login/${userObj.userName}/${userObj.password}`);
+    let result = await axios.get('/api/users/signin', userObj).then(res => console.log(res)).catch(err => console.log(err));
     console.log(result);
 }
 
