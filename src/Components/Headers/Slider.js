@@ -144,7 +144,7 @@ class SliderCarousel extends React.Component {
             autoPlay: true,
             timer: 500,
             animation: "fade",
-            indicators: false,
+            indicators: true,
             timeout: 500,
             navButtonsAlwaysVisible: false,
             navButtonsAlwaysInvisible: false,
