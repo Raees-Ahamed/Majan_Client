@@ -29,16 +29,16 @@ const GridItems = () =>{
         }
     }));
 
-    const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20];
 
     const classes = useStyles();
 
     return(
-        <Container className={classes.cardGrid} maxWidth="md">
+        <Container className={classes.cardGrid} maxWidth={false}>
             {/* End hero unit */}
-            <Grid container spacing={4}>
+            <Grid container spacing={6}>
                 {cards.map((card) => (
-                    <Grid item key={card} xs={12} sm={6} md={4}>
+                    <Grid item key={card} xs={6} sm={4} md={3}>
                         <Card className={classes.card}>
                             <CardMedia
                                 className={classes.cardMedia}

@@ -5,6 +5,8 @@ import Shop from "./Pages/Shop";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Checkout from "./Pages/CheckOut";
+import Cookie from "./Pages/Cookies";
+import SingleItem from "./Pages/SingleItem";
 
 class App extends Component {
   render(){
@@ -15,7 +17,9 @@ class App extends Component {
               <Route path="/shop" component={Shop} />
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
-                <Route path="/checkout" component={Checkout} />
+              <Route path="/checkout" component={Checkout} />
+              <Route path="/cookies" component={Cookie} />
+              <Route path="/item" component={SingleItem} />
             </Switch>
         </Router>
     );

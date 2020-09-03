@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Pricing from './App';
 import * as serviceWorker from './serviceWorker';
+import { CookiesProvider } from 'react-cookie';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Pricing />
+      <CookiesProvider>
+        <Pricing />
+      </CookiesProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
