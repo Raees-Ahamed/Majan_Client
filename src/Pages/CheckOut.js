@@ -1,6 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import Paper from '@material-ui/core/Paper';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -11,10 +13,12 @@ import Address from "../Components/CheckOut/Address";
 import Payment from "../Components/CheckOut/Payment";
 import Summary from "../Components/CheckOut/Summary";
 import Footer from "../Components/Footer/Footer";
-import NavigationHeader from "../Components/Headers/NavigationHeader";
 
 
 const useStyles = makeStyles((theme) => ({
+    appBar: {
+        position: 'relative',
+    },
     layout: {
         width: 'auto',
         marginLeft: theme.spacing(2),
@@ -50,63 +54,26 @@ const useStyles = makeStyles((theme) => ({
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
+function getStepContent(step) {
+    switch (step) {
+        case 0:
+            return <Address />;
+        case 1:
+            return <Payment />;
+        case 2:
+            return <Summary />;
+        default:
+            throw new Error('Unknown step');
+    }
+}
+
 const Checkout = () => {
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
 
-    //Address details
-    const [getFirstNameValue, setFirstNameValue] = useState({firstName : ''})
-    const [getLastNameValue, setLastNameValue] = useState({lastName : ''})
-    const [getAdd1Value, setAdd1Value] = useState({addressLine1 : ''})
-    const [getAdd2Value, setAdd2Value] = useState({addressLine2 : ''})
-    const [getCityValue, setCityValue] = useState({city : ''})
-
-    //Payment details
-    const [getCardNameValue, setCardNameValue] = useState({cardName : ''})
-    const [getCardNoValue, setCardNoValue] = useState({cardNo : ''})
-    const [getExpValue, setExpValue] = useState({expDate : ''})
-    const [getCV, setCV] = useState({cvValue : ''})
-
-    const getStepContent = (step) => {
-        switch (step) {
-            case 0:
-                return <Address
-                        firstNameHandler = {event => setFirstNameValue(event.target.value)}
-                        lastNameHandler = {event => setLastNameValue(event.target.value)}
-                        address1Handler = {event => setAdd1Value(event.target.value)}
-                        address2Handler = {event => setAdd2Value(event.target.value)}
-                        cityHandler = {event => setCityValue(event.target.value)}
-                    />;
-            case 1:
-                return <Payment
-                        cardNameHandler = {event => setCardNameValue(event.target.value)}
-                        cardNoHandler = {event => setCardNoValue(event.target.value)}
-                        expDateHandler = {event => setExpValue(event.target.value)}
-                        cvNoHandler = {event => setCV(event.target.value)}
-                    />;
-            case 2:
-                return <Summary />;
-            default:
-                throw new Error('Unknown step');
-        }
-    }
-
     const handleNext = () => {
         setActiveStep(activeStep + 1);
-
         if((activeStep + 1) == 3){
-            let formData = {
-                firstName : getFirstNameValue,
-                lastName : getLastNameValue,
-                addressLine1 : getAdd1Value,
-                addressLine2 : getAdd2Value,
-                city : getCityValue,
-                cardName : getCardNameValue,
-                cardNo : getCardNoValue,
-                expDate : getExpValue,
-                cvNo : getCV
-            }
-            console.log(formData);
         }
     };
 
@@ -117,7 +84,13 @@ const Checkout = () => {
     return (
         <React.Fragment>
             <CssBaseline />
-            <NavigationHeader />
+            <AppBar position="absolute" color="default" className={classes.appBar}>
+                <Toolbar>
+                    <Typography variant="h6" color="inherit" noWrap>
+                        Majang.lk
+                    </Typography>
+                </Toolbar>
+            </AppBar>
             <main className={classes.layout}>
                 <Paper className={classes.paper}>
                     <Typography component="h1" variant="h4" align="center">

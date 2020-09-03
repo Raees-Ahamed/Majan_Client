@@ -2,7 +2,6 @@ import React from 'react';
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
-import Button from "@material-ui/core/Button";
 import AppBar from "@material-ui/core/AppBar";
 import { makeStyles } from "@material-ui/core/styles";
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
@@ -15,7 +14,9 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 
-const NavigationHeader = () => {
+import Cart from "../Cart/Cart";
+
+const NavigationHeader = (props) => {
 
     const useStyles = makeStyles((theme) => ({
         appBar: {
@@ -96,12 +97,13 @@ const NavigationHeader = () => {
 
 
                     <nav>
-                        <IconButton aria-label="cart">
-                            <StyledBadge badgeContent={4} color="secondary">
-                                <ShoppingCartIcon />
-                            </StyledBadge>
-                        </IconButton>
-                        <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() => history.push("/")}>
+                        {/*<IconButton aria-label="cart">*/}
+                        {/*    <StyledBadge badgeContent={4} color="secondary">*/}
+                        {/*        <ShoppingCartIcon />*/}
+                        {/*    </StyledBadge>*/}
+                        {/*</IconButton>*/}
+                        <Cart />
+                        <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() =>history.push("/")}>
                             Home
                         </Link>
                         <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() => history.push("/shop")}>
@@ -117,15 +119,6 @@ const NavigationHeader = () => {
                             Checkout
                         </Link>
                     </nav>
-                    {/*<Button href="javascript:void(0)" color="primary" variant="outlined" className={classes.link} onClick={()=>history.push("/login")}>*/}
-                    {/*    Login*/}
-                    {/*</Button>*/}
-                    {/*<Button href="javascript:void(0)" color="primary" variant="outlined" className={classes.link} onClick={()=>history.push("/register")}>*/}
-                    {/*    Register*/}
-                    {/*</Button>*/}
-                    {/*<Button href="javascript:void(0)" color="primary" variant="outlined" className={classes.link} onClick={()=>history.push("/checkout")}>*/}
-                    {/*    Checkout*/}
-                    {/*</Button>*/}
                 </Toolbar>
             </AppBar>
         </React.Fragment>

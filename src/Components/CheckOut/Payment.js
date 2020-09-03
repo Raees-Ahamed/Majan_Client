@@ -3,7 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 
-const Payment = (props) => {
+const Payment = () => {
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
@@ -11,7 +11,7 @@ const Payment = (props) => {
             </Typography>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={6}>
-                    <TextField required id="cardName" label="Name on card" fullWidth autoComplete="cc-name" onChange={props.cardNameHandler}/>
+                    <TextField required id="cardName" label="Name on card" fullWidth autoComplete="cc-name" />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <TextField
@@ -20,11 +20,10 @@ const Payment = (props) => {
                         label="Card number"
                         fullWidth
                         autoComplete="cc-number"
-                        onChange={props.cardNoHandler}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <TextField required id="expDate" label="Expiry date" fullWidth autoComplete="cc-exp" onChange={props.expDateHandler}/>
+                    <TextField required id="expDate" label="Expiry date" fullWidth autoComplete="cc-exp" />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <TextField
@@ -34,7 +33,6 @@ const Payment = (props) => {
                         helperText="Last three digits on signature strip"
                         fullWidth
                         autoComplete="cc-csc"
-                        onChange={props.cvNoHandler}
                     />
                 </Grid>
             </Grid>
