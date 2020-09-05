@@ -12,6 +12,7 @@ import Footer from "./Components/Footer/Footer";
 import GlobalData from './Components/Global/Global';
 import { instanceOf } from "prop-types";
 import { withCookies, Cookies } from "react-cookie";
+import cartNew from "./Pages/CartNew";
 
 class App extends Component {
 
@@ -42,6 +43,8 @@ class App extends Component {
                   <Route path="/checkout" component={Checkout} />
                   <Route path="/cookies" component={Cookie} />
                   <Route path="/item" component={SingleItem} />
+                  <Route path="/cartNew" component={cartNew} />
+
                 </Switch>
                 <Footer />
             </GlobalData.Provider>

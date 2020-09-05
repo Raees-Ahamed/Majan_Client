@@ -59,7 +59,7 @@ const Cart = (props) => {
     const [cookies, setCookie, removeCookie] = useCookies(['cartItems']);
 
     const [getTotalItems, setTotalItems] = useState({
-        totalItems: cookies.cartItems.length
+        totalItems: cookies.cartItems ? cookies.cartItems.length: 0
     })
 
     // getModalStyle is not a pure function, we roll the style only on the first render

@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     });
 
     const [getTotalItems, setTotalItems] = useState({
-         totalItems: cookies.cartItems.length
+         totalItems: (cookies.cartItems) ? cookies.cartItems.length:0
     })
 
      const [getQty, setQty] = useState({
@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme) => ({
             setCookie('cartItems', JSON.stringify(cartItems));
         }
 
-        setTotalItems({totalItems: cookies.cartItems.length});
+        setTotalItems({totalItems: (cookies.cartItems)? cookies.cartItems.length:0 });
      }
 
     return (
