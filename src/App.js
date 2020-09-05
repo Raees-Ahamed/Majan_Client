@@ -1,5 +1,5 @@
-import React,{Component} from 'react';
-import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom";
+import React,{useState, useEffect} from 'react';
+import { BrowserRouter as Router, Route, Redirect, Switch, useLocation } from "react-router-dom";
 import Home from "./Pages/Home";
 import Shop from "./Pages/Shop";
 import Login from "./Pages/Login";
@@ -10,44 +10,32 @@ import SingleItem from "./Pages/SingleItem";
 import NavigationHeader from "./Components/Headers/NavigationHeader";
 import Footer from "./Components/Footer/Footer";
 import GlobalData from './Components/Global/Global';
-import { instanceOf } from "prop-types";
-import { withCookies, Cookies } from "react-cookie";
+import { useCookies } from 'react-cookie';
 
-class App extends Component {
+const App = (props) => {
 
-    static propTypes = {
-        cookies: instanceOf(Cookies).isRequired
-    };
+    const [cookies, setCookie] = useCookies(['cartItems']);
 
-    state = {
-        currentItems: this.props.cookies.get("cartItems") || ""
-    };
+    const [value, setValue] = useState({totalItems: (typeof(cookies.cartItems) !== 'undefined') ? cookies.cartItems.length : 0 })
 
-  render(){
-
-      let totalItemsInCart = this.state.currentItems.length;
-
-      let items = this.state.currentItems.length;
-      console.log(items);
+    let location = useLocation();
 
     return (
-        <Router>
-            <GlobalData.Provider value={totalItemsInCart}>
-                <NavigationHeader />
-                <Switch>
-                  <Route path="/" exact component={Home} />
-                  <Route path="/shop" component={Shop} />
-                  <Route path="/login" component={Login} />
-                  <Route path="/register" component={Register} />
-                  <Route path="/checkout" component={Checkout} />
-                  <Route path="/cookies" component={Cookie} />
-                  <Route path="/item" component={SingleItem} />
-                </Switch>
-                <Footer />
-            </GlobalData.Provider>
-        </Router>
+        <GlobalData.Provider value={{value, setValue}}>
+            <NavigationHeader />
+            <Switch>
+              <Route path="/" exact component={Home} />
+              <Route path="/shop" component={Shop} />
+              <Route path="/login" component={Login} />
+              <Route path="/register" component={Register} />
+              <Route path="/checkout" component={Checkout} />
+              <Route path="/cookies" component={Cookie} />
+              <Route path="/item" component={SingleItem} />
+            </Switch>
+            {(location.pathname === '/login') ?null : <Footer />}
+        </GlobalData.Provider>
     );
-  }
+
 }
 
-export default withCookies(App);
+export default App;

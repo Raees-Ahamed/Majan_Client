@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useContext} from 'react';
 import {makeStyles, withStyles} from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
@@ -9,7 +9,6 @@ import Fade from '@material-ui/core/Fade';
 import CartItems from "./CartItems";
 import Button from '@material-ui/core/Button';
 import {useHistory} from "react-router-dom";
-import { useCookies } from 'react-cookie';
 import GlobalData from "../Global/Global";
 
 function rand() {
@@ -51,16 +50,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Cart = (props) => {
+const Cart = () => {
     let history = useHistory();
     const classes = useStyles();
-    const totalItemsInCart = useContext(GlobalData);
-
-    const [cookies, setCookie, removeCookie] = useCookies(['cartItems']);
-
-    const [getTotalItems, setTotalItems] = useState({
-        totalItems: cookies.cartItems.length
-    })
+    const {value} = useContext(GlobalData);
 
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [modalStyle] = React.useState(getModalStyle);
@@ -95,7 +88,7 @@ const Cart = (props) => {
     return (
         <React.Fragment>
             <IconButton aria-label="cart" onClick={handleOpen}>
-                <StyledBadge badgeContent={totalItemsInCart} color="secondary">
+                <StyledBadge badgeContent={value.totalItems} color="secondary">
                     <ShoppingCartIcon />
                 </StyledBadge>
             </IconButton>
