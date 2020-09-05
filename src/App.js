@@ -12,6 +12,8 @@ import Footer from "./Components/Footer/Footer";
 import GlobalData from './Components/Global/Global';
 import { useCookies } from 'react-cookie';
 import CartNew from "./Pages/CartNew";
+import Contact from "./Pages/Contact";
+import Cart from "./Components/Cart/Cart";
 
 const App = (props) => {
 
@@ -35,6 +37,10 @@ const App = (props) => {
               <Route path="/cookies" component={Cookie} />
               <Route path="/item" component={SingleItem} />
               <Route path="/cartNew" component={CartNew} />
+              <Route path="/contact" component={Contact} />
+              {/* <Route path="/cart" component={Cart} /> */}
+
+
             </Switch>
             {(location.pathname === '/login') ?null : <Footer />}
         </GlobalData.Provider>

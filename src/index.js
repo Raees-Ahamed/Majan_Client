@@ -5,6 +5,7 @@ import './index.css';
 import Pricing from './App';
 import * as serviceWorker from './serviceWorker';
 import { CookiesProvider } from 'react-cookie';
+import './Assets/style/scss/style.scss';
 
 ReactDOM.render(
   <React.StrictMode>
