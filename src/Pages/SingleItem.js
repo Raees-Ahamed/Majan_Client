@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -17,6 +17,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import { useCookies } from 'react-cookie';
+import GlobalData from "../Components/Global/Global";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -52,15 +53,17 @@ const useStyles = makeStyles((theme) => ({
 
     const classes = useStyles();
 
-    const [cookies, setCookie, removeCookie] = useCookies(['cartItems']);
+    const [cookies, setCookie] = useCookies(['cartItems']);
 
     const [getImageComponent, setImageComponent] = useState({
         isImageComponentShow: null
     });
 
-    const [getTotalItems, setTotalItems] = useState({
-         totalItems: (cookies.cartItems) ? cookies.cartItems.length:0
-    })
+     const {value,setValue} = useContext(GlobalData);
+
+    // const [getTotalItems, setTotalItems] = useState({
+    //      totalItems: cookies.cartItems.length
+    // })
 
      const [getQty, setQty] = useState({
          qty: 0
@@ -104,7 +107,9 @@ const useStyles = makeStyles((theme) => ({
             setCookie('cartItems', JSON.stringify(cartItems));
         }
 
-        setTotalItems({totalItems: (cookies.cartItems)? cookies.cartItems.length:0 });
+         setValue({
+             totalItems: (typeof(cookies.cartItems) !== 'undefined') ? cookies.cartItems.length : 1
+         })
      }
 
     return (

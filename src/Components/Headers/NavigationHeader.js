@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import AppBar from "@material-ui/core/AppBar";
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,10 +10,8 @@ import { useHistory } from "react-router-dom";
 import MenuIcon from '@material-ui/icons/Menu';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import Cart from "../Cart/Cart";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import Button from '@material-ui/core/Button';
-
+import GlobalData from "../Global/Global";
 
 const NavigationHeader = (props) => {
 
@@ -63,6 +60,8 @@ const NavigationHeader = (props) => {
         setAnchorEl(null);
     };
 
+    const {value} = useContext(GlobalData);
+
     return (
         <React.Fragment>
             <AppBar position="static" color="default" elevation={0} className={classes.appBar}>
@@ -88,15 +87,14 @@ const NavigationHeader = (props) => {
                         </Menu>
                     </Link>
                     <nav>
-                        {/* <Cart itemsInCart={props.totalItemsInCart} /> */}
-
-                        <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() => history.push("/cartNew")}>
-                            <IconButton>
+                        <IconButton aria-label="cart" onClick={() => history.push("/cartNew")}>
+                            <StyledBadge badgeContent={value.totalItems} color="secondary">
                                 <ShoppingCartIcon />
-                            </IconButton>
+                            </StyledBadge>
+                        </IconButton>
+                        <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() =>history.push("/")}>
+                            Home
                         </Link>
-
-
                         <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() => history.push("/shop")}>
                             Shop
                         </Link>

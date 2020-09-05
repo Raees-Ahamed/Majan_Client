@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Shop() {
+const Shop = (props) => {
 
     const classes = useStyles();
 
@@ -41,13 +41,13 @@ export default function Shop() {
             <CssBaseline />
             <main>
                 <CategoryHeader />
-
                 <Container maxWidth={false}>
                     <Paper component="form" className={classes.root}>
                         <InputBase
                             className={classes.input}
                             placeholder="Which item you are looking for...."
                             inputProps={{ 'aria-label': 'search google maps' }}
+                            onChange = {props.filterItems}
                         />
                         <IconButton type="submit" className={classes.iconButton} aria-label="search">
                             <SearchIcon />
@@ -66,3 +66,5 @@ export default function Shop() {
         </React.Fragment>
     );
 }
+
+export default Shop;
