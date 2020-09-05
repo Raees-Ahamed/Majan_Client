@@ -3,8 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -15,6 +13,8 @@ import Container from '@material-ui/core/Container';
 import Footer from "../Components/Footer/Footer";
 import {useHistory} from "react-router-dom";
 import axios from 'axios';
+import * as AppGlobal from "../AppHelp/AppGlobal";
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -42,7 +42,9 @@ const Register = () => {
     const [getLastNameValue, setLastNameValue] = useState({lastName : ''})
     const [getEmailValue, setEmailValue] = useState({email : ''})
     const [getPwdValue, setPwdValue] = useState({password : ''})
-    const [getConfPwdValue, setConfPwdValue] = useState({ConfPassword : ''})
+    const [getConfPwdValue, setConfPwdValue] = useState({confPassword : ''})
+    const [getUserStatus,setUserStatus] = useState({ status: null });
+    const [getErrorMsg, setErrorMsg] = useState({msg:''});
 
     const classes = useStyles();
     let history = useHistory();
@@ -52,10 +54,22 @@ const Register = () => {
             firstName : getFirstNameValue,
             lastName : getLastNameValue,
             email : getEmailValue,
-            pwd : getPwdValue,
-            confPwd : getConfPwdValue,
+            password : getPwdValue,
+            confPassword : getConfPwdValue,
+            usertype: 1
         }
         console.log(formData);
+
+        axios.post(AppGlobal.apiBaseUrl+'User/',  formData )
+            .then(res => {
+                if(res.data.respondId == 0){
+                    setErrorMsg({msg:res.data.description})
+                    setUserStatus({status:0})
+                }else{
+                    setErrorMsg({msg:res.data.description})
+                    setUserStatus({status:1})
+                }
+            })
     }
 
     return (
@@ -134,6 +148,18 @@ const Register = () => {
                             />
                         </Grid>
                     </Grid>
+
+                    {
+                        (getUserStatus.status == null) ? '' : (
+                            (getUserStatus.status == 1) ?
+                                <div>
+                                    <Alert severity="success">{getErrorMsg.msg}</Alert>
+                                </div> : <div>
+                                    <Alert severity="error">{getErrorMsg.msg}</Alert>
+                                </div>
+                        )
+                    }
+
                     <Button
                         type="button"
                         fullWidth

@@ -1,10 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -13,15 +11,12 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Footer from "../Components/Footer/Footer";
-import {useHistory} from "react-router-dom";
-
+import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import * as AppGlobal from "../AppHelp/AppGlobal";
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        height: '100vh',
-    },
     image: {
         backgroundImage: 'url(https://source.unsplash.com/random)',
         backgroundRepeat: 'no-repeat',
@@ -47,11 +42,40 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    root: {
+        width: '100%',
+        '& > * + *': {
+          marginTop: theme.spacing(2),
+        },
+        height: '100vh',
+    }
 }));
 
-const Login =() => {
+const Login = () => {
     const classes = useStyles();
     let history = useHistory();
+
+    const [getUserName, setUserName] = useState({ userName: '' });
+    const [getPwd, setPwd] = useState({ password: '' });
+    const [getUserStatus,setUserStatus] = useState({ status: null });
+    const [getErrorMsg, setErrorMsg] = useState({msg:''});
+
+    const loginHandler = async () => {
+        const userObj = {
+            email: getUserName,
+            password: getPwd
+        }
+
+        let result = await axios.get(AppGlobal.apiBaseUrl + `User/${userObj.email}/${userObj.password}`);
+
+        if(result.data.respondId == 0){
+            setErrorMsg({msg:result.data.description})
+            setUserStatus({status:0})
+        }else{
+            setErrorMsg({msg:result.data.description})
+            setUserStatus({status:1})
+        }
+    }
 
     return (
         <Grid container component="main" className={classes.root}>
@@ -65,7 +89,7 @@ const Login =() => {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <form className={classes.form} noValidate onSubmit={onLogin}>
+                    <form className={classes.form} noValidate>
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -76,6 +100,7 @@ const Login =() => {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            onChange={event => setUserName(event.target.value)}
                         />
                         <TextField
                             variant="outlined"
@@ -87,18 +112,27 @@ const Login =() => {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            onChange={event => setPwd(event.target.value)}
                         />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
+
+                        {
+                            (getUserStatus.status == null) ? '' : (
+                                (getUserStatus.status == 1) ?
+                                <div>
+                                    <Alert severity="success">{getErrorMsg.msg}</Alert>
+                                </div> : <div>
+                                        <Alert severity="error">{getErrorMsg.msg}</Alert>
+                                    </div>
+                            )
+                        }
+
                         <Button
-                            type="submit"
+                            type="button"
                             fullWidth
                             variant="contained"
                             color="primary"
                             className={classes.submit}
-                            onClick={onLogin}
+                            onClick={() => loginHandler()}
                         >
                             Sign In
                         </Button>
@@ -109,7 +143,7 @@ const Login =() => {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2" onClick={()=>history.push("/register")}>
+                                <Link href="javascript:void(0)" variant="body2" onClick={() => history.push("/register")}>
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>
@@ -122,21 +156,6 @@ const Login =() => {
             </Grid>
         </Grid>
     );
-}
-
-
-
-
-
-
-const onLogin= async () => {
-    const userObj = {
-        userName: 'admin',
-        password: '123'
-    }    
-    //let result = await axios.get(AppGlobal.apiBaseUrl + `Login/${userObj.userName}/${userObj.password}`);
-    let result = await axios.get('/api/users/signin', userObj).then(res => console.log(res)).catch(err => console.log(err));
-    console.log(result);
 }
 
 export default Login;
