@@ -1,0 +1,165 @@
+/*----------------------------------------*/
+
+/*  1. Template default CSS
+/*----------------------------------------*/
+
+/*-- Google Font --*/
+
+@import url("https://fonts.googleapis.com/css?family=Cormorant+Garamond:300,400,500,600,700|Poppins:300,400,500,600,700,800,900|Abril+Fatface&display=swap");
+
+/*-- Common Style --*/
+
+
+ul {
+  list-style: outside none none;
+  margin: 0;
+  padding: 0;
+}
+
+
+.custom-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+
+  @media #{$xl-layout} {
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+
+  @media #{$lg-layout} {
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+
+  @media #{$md-layout} {
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+
+  @media #{$xs-layout} {
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+}
+
+.custom-row-2 {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -5px;
+  margin-left: -5px;
+
+  & div[class^="col-"] {
+    padding-left: 5px;
+    padding-right: 5px;
+
+    @media #{$md-layout} {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    @media #{$xs-layout} {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+
+  @media #{$xl-layout} {
+    margin-right: -5px;
+    margin-left: -5px;
+  }
+
+  @media #{$lg-layout} {
+    margin-right: -5px;
+    margin-left: -5px;
+  }
+
+  @media #{$md-layout} {
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+
+  @media #{$xs-layout} {
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+}
+
+.custom-row-3 {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -13.6px;
+  margin-left: -13.6px;
+
+  & div[class^="col-"] {
+    padding-left: 13.6px;
+    padding-right: 13.6px;
+
+    @media #{$xs-layout} {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+
+  @media #{$xl-layout} {
+    margin-right: -13.6px;
+    margin-left: -13.6px;
+  }
+
+  @media #{$lg-layout} {
+    margin-right: -13.6px;
+    margin-left: -13.6px;
+  }
+
+  @media #{$md-layout} {
+    margin-right: -13.6px;
+    margin-left: -13.6px;
+  }
+
+  @media #{$xs-layout} {
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+}
+
+.custom-col-5 {
+  flex: 0 0 20%;
+  max-width: 20%;
+  padding-right: 15px;
+  padding-left: 15px;
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+
+  @media #{$xl-layout} {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  @media #{$lg-layout} {
+    padding-right: 15px;
+    padding-left: 15px;
+    flex: 0 0 33.333%;
+    max-width: 33.333%;
+  }
+
+  @media #{$md-layout} {
+    padding-right: 15px;
+    padding-left: 15px;
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  @media #{$xs-layout} {
+    padding-right: 15px;
+    padding-left: 15px;
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  @media #{$sm-layout} {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
