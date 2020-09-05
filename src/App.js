@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react';
-import { BrowserRouter as Router, Route, Redirect, Switch, useLocation } from "react-router-dom";
+import {Route, Switch, useLocation } from "react-router-dom";
 import Home from "./Pages/Home";
 import Shop from "./Pages/Shop";
 import Login from "./Pages/Login";
@@ -11,6 +11,7 @@ import NavigationHeader from "./Components/Headers/NavigationHeader";
 import Footer from "./Components/Footer/Footer";
 import GlobalData from './Components/Global/Global';
 import { useCookies } from 'react-cookie';
+import CartNew from "./Pages/CartNew";
 
 const App = (props) => {
 
@@ -19,6 +20,8 @@ const App = (props) => {
     const [value, setValue] = useState({totalItems: (typeof(cookies.cartItems) !== 'undefined') ? cookies.cartItems.length : 0 })
 
     let location = useLocation();
+
+    console.log(value.totalItems);
 
     return (
         <GlobalData.Provider value={{value, setValue}}>
@@ -31,6 +34,7 @@ const App = (props) => {
               <Route path="/checkout" component={Checkout} />
               <Route path="/cookies" component={Cookie} />
               <Route path="/item" component={SingleItem} />
+              <Route path="/cartNew" component={CartNew} />
             </Switch>
             {(location.pathname === '/login') ?null : <Footer />}
         </GlobalData.Provider>

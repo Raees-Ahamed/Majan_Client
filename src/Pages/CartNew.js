@@ -6,26 +6,16 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Avatar from '@material-ui/core/Avatar';
-import TextField from "material-ui/TextField";
-import { AvSortByAlpha } from 'material-ui/svg-icons';
-
 import CloseIcon from '@material-ui/icons/Close';
 import Link from "@material-ui/core/Link";
-
-
 import Button from '@material-ui/core/Button';
 import { styled } from '@material-ui/core/styles';
-
-
 
 function createData(code, image, name, quantity) {
     return { code, image, name, quantity };
 }
-
-
 
 const rows = [
     createData('ITEM1', 'image', 'Paint', 100),
@@ -34,11 +24,7 @@ const rows = [
     createData('ITEM4', 'image3', 'Paint3', 100),
 ];
 
-
-
 const columns = [
-
-
     {
         id: 'image',
         label: 'image',
@@ -74,17 +60,7 @@ const columns = [
         align: 'center',
         format: (value) => value.toLocaleString('en-US'),
     }
-
-
-
-
 ]
-
-
-
-
-
-
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -102,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Cart = (props) => {
+const CartNew = (props) => {
 
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
@@ -166,13 +142,6 @@ const Cart = (props) => {
     );
 }
 
-
-
-
-
-
-
-
 const row = (
     x,
     i,
@@ -181,12 +150,9 @@ const row = (
 
     return (
         <TableRow key={`tr-${i}`} selectable={false}>
-
-
             <TableCell >
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
             </TableCell>
-
 
             {columns.slice(-4,-2).map((y, k) => (
                 <TableCell key={`trc-${k}`}>
@@ -203,17 +169,7 @@ const row = (
                     <CloseIcon />
                 </Link>
             </TableCell>
-
-
-
-
-
-
         </TableRow>
-
-
-
-
     );
 };
 
@@ -230,4 +186,4 @@ const BtnSeeMoreStyle = styled(Button)({
     
   });
 
-export default Cart;
+export default CartNew;
