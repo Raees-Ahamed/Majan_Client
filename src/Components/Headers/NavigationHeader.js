@@ -12,6 +12,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Cart from "../Cart/Cart";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import Button from '@material-ui/core/Button';
+
 import { withRouter } from 'react-router-dom';
 
 const NavigationHeader = (props) => {
@@ -66,29 +69,35 @@ const NavigationHeader = (props) => {
             <AppBar position="static" color="default" elevation={0} className={classes.appBar}>
                 <Toolbar className={classes.toolbar}>
 
-                    <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
+
+                    <Link variant="h6" color="inherit" noWrap className={classes.toolbarTitle} href="javascript:void(0)"  onClick={() => history.push("/")}>
                         Majang.lk
                             <IconButton edge="start" color="inherit" aria-label="menu" className={classes.menuButton} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                                <MenuIcon />
-                            </IconButton>
+                            <MenuIcon />
+                        </IconButton>
 
-                            <Menu
-                                id="simple-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                            >
-                                <MenuItem onClick={handleClose}>Paints</MenuItem>
-                                <MenuItem onClick={handleClose}>Spare parts</MenuItem>
-                                <MenuItem onClick={handleClose}>Stickers</MenuItem>
-                            </Menu>
-                    </Typography>
+                        <Menu
+                            id="simple-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                        >
+                            <MenuItem onClick={handleClose}>Paints</MenuItem>
+                            <MenuItem onClick={handleClose}>Spare parts</MenuItem>
+                            <MenuItem onClick={handleClose}>Stickers</MenuItem>
+                        </Menu>
+                    </Link>
                     <nav>
-                        <Cart itemsInCart={props.totalItemsInCart}/>
-                        <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() =>history.push("/")}>
-                            Home
+                        {/* <Cart itemsInCart={props.totalItemsInCart} /> */}
+
+                        <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() => history.push("/cartNew")}>
+                            <IconButton>
+                                <ShoppingCartIcon />
+                            </IconButton>
                         </Link>
+
+
                         <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() => history.push("/shop")}>
                             Shop
                         </Link>

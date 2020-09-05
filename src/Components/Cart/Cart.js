@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {makeStyles, withStyles} from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
