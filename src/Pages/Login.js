@@ -15,6 +15,7 @@ import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import * as AppGlobal from "../AppHelp/AppGlobal";
 import Alert from '@material-ui/lab/Alert';
+import { useCookies } from 'react-cookie';
 
 const useStyles = makeStyles((theme) => ({
     image: {
@@ -57,23 +58,43 @@ const Login = () => {
 
     const [getUserName, setUserName] = useState({ userName: '' });
     const [getPwd, setPwd] = useState({ password: '' });
-    const [getUserStatus,setUserStatus] = useState({ status: null });
+
+    const [userFieldStatus, setUserFieldStatus] = useState({ isError: false });
+    const [pwdFieldStatus, setpwdFieldStatus] = useState({ isError: false });
+
     const [getErrorMsg, setErrorMsg] = useState({msg:''});
 
+    const [cookies, setCookie, removeCookie] = useCookies(['jwtToken']);
+
     const loginHandler = async () => {
+
+        setUserFieldStatus({isError: false});
+        setpwdFieldStatus({isError: false});
+        setErrorMsg({msg:''});
+
         const userObj = {
-            email: getUserName,
-            password: getPwd
+            email: (getUserName.userName)? getUserName.userName: "unsafe",
+            password: (getPwd.password)? getPwd.password: "unsafe"
         }
 
-        let result = await axios.get(AppGlobal.apiBaseUrl + `User/${userObj.email}/${userObj.password}`);
-
-        if(result.data.respondId == 0){
-            setErrorMsg({msg:result.data.description})
-            setUserStatus({status:0})
-        }else{
-            setErrorMsg({msg:result.data.description})
-            setUserStatus({status:1})
+        try{
+            let result = await axios.get(AppGlobal.apiBaseUrl + `User/${userObj.email}/${userObj.password}`);
+            if(cookies.jwtToken){
+                removeCookie('jwtToken');
+            }
+            setCookie('jwtToken', JSON.stringify(result.data.token));
+            history.push("/");
+        }catch (e){
+            console.log(e.response);
+            if(!e.response.data.Email || !e.response.data.Password){
+                if(!e.response.data.Email){
+                    setUserFieldStatus({isError: true});
+                }
+                if(!e.response.data.Password){
+                    setpwdFieldStatus({isError: true});
+                }
+                setErrorMsg({msg:<div><Alert severity="error">{e.response.data.Description}</Alert></div>});
+            }
         }
     }
 
@@ -91,6 +112,7 @@ const Login = () => {
                     </Typography>
                     <form className={classes.form} noValidate>
                         <TextField
+                            error = {userFieldStatus.isError}
                             variant="outlined"
                             margin="normal"
                             required
@@ -100,9 +122,10 @@ const Login = () => {
                             name="email"
                             autoComplete="email"
                             autoFocus
-                            onChange={event => setUserName(event.target.value)}
+                            onChange={event => setUserName({userName: event.target.value})}
                         />
                         <TextField
+                            error = {pwdFieldStatus.isError}
                             variant="outlined"
                             margin="normal"
                             required
@@ -112,18 +135,11 @@ const Login = () => {
                             type="password"
                             id="password"
                             autoComplete="current-password"
-                            onChange={event => setPwd(event.target.value)}
+                            onChange={event => setPwd({password: event.target.value})}
                         />
 
                         {
-                            (getUserStatus.status == null) ? '' : (
-                                (getUserStatus.status == 1) ?
-                                <div>
-                                    <Alert severity="success">{getErrorMsg.msg}</Alert>
-                                </div> : <div>
-                                        <Alert severity="error">{getErrorMsg.msg}</Alert>
-                                    </div>
-                            )
+                            getErrorMsg.msg
                         }
 
                         <Button

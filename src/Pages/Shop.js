@@ -25,16 +25,20 @@ const useStyles = makeStyles((theme) => ({
     },
     iconButton: {
         padding: 10,
-    },
-    paginationMargin: {
-        marginTop: theme.spacing(2),
-        float:'right'
     }
 }));
 
 const Shop = (props) => {
 
     const classes = useStyles();
+
+    const searchItems = (event) => {
+            biRef.callToGridItems(event.target.value);
+    }
+
+    var biRef = {
+        searchItems: searchItems
+    }
 
     return (
         <React.Fragment>
@@ -47,7 +51,7 @@ const Shop = (props) => {
                             className={classes.input}
                             placeholder="Which item you are looking for...."
                             inputProps={{ 'aria-label': 'search google maps' }}
-                            onChange = {props.filterItems}
+                            onChange={searchItems}
                         />
                         <IconButton type="submit" className={classes.iconButton} aria-label="search">
                             <SearchIcon />
@@ -55,13 +59,8 @@ const Shop = (props) => {
                     </Paper>
                 </Container>
 
-                <GridItems />
+                <GridItems biRef={biRef}/>
 
-                <Container maxWidth={false}>
-                    <div className={classes.paginationMargin}>
-                        <Pagination count={10} color="primary" />
-                    </div>
-                </Container>
             </main>
         </React.Fragment>
     );
