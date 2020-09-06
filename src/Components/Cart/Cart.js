@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
 import {makeStyles, withStyles} from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
@@ -9,6 +9,7 @@ import Fade from '@material-ui/core/Fade';
 import CartItems from "./CartItems";
 import Button from '@material-ui/core/Button';
 import {useHistory} from "react-router-dom";
+import GlobalData from "../Global/Global";
 
 function rand() {
     return Math.round(Math.random() * 20) - 10;
@@ -35,9 +36,11 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2, 4, 3),
     },
     modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        position: 'absolute',
+        boxSizing: 'border-box',
+        left: '0',
+        right: '-20px',
+        'overflow-x': 'hidden'
     },
     buttonRightAlign: {
         float:'right'
@@ -50,6 +53,8 @@ const useStyles = makeStyles((theme) => ({
 const Cart = () => {
     let history = useHistory();
     const classes = useStyles();
+    const {value} = useContext(GlobalData);
+
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [modalStyle] = React.useState(getModalStyle);
     const [open, setOpen] = React.useState(false);
@@ -83,7 +88,7 @@ const Cart = () => {
     return (
         <React.Fragment>
             <IconButton aria-label="cart" onClick={handleOpen}>
-                <StyledBadge badgeContent={4} color="secondary">
+                <StyledBadge badgeContent={value.totalItems} color="secondary">
                     <ShoppingCartIcon />
                 </StyledBadge>
             </IconButton>

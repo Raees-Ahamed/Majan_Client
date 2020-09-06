@@ -2,7 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import Paper from '@material-ui/core/Paper';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -12,8 +11,6 @@ import Typography from '@material-ui/core/Typography';
 import Address from "../Components/CheckOut/Address";
 import Payment from "../Components/CheckOut/Payment";
 import Summary from "../Components/CheckOut/Summary";
-import Footer from "../Components/Footer/Footer";
-
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -85,11 +82,6 @@ const Checkout = () => {
         <React.Fragment>
             <CssBaseline />
             <AppBar position="absolute" color="default" className={classes.appBar}>
-                <Toolbar>
-                    <Typography variant="h6" color="inherit" noWrap>
-                        Majang.lk
-                    </Typography>
-                </Toolbar>
             </AppBar>
             <main className={classes.layout}>
                 <Paper className={classes.paper}>
@@ -136,7 +128,6 @@ const Checkout = () => {
                         )}
                     </React.Fragment>
                 </Paper>
-                <Footer />
             </main>
         </React.Fragment>
     );

@@ -1,12 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router} from "react-router-dom";
 import './index.css';
 import Pricing from './App';
 import * as serviceWorker from './serviceWorker';
+import { CookiesProvider } from 'react-cookie';
+import './Assets/style/scss/style.scss';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Pricing />
+      <CookiesProvider>
+          <Router>
+            <Pricing />
+          </Router>
+      </CookiesProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

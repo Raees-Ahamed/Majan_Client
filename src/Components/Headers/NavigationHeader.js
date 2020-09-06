@@ -1,10 +1,8 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import AppBar from "@material-ui/core/AppBar";
 import { makeStyles } from "@material-ui/core/styles";
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Badge from '@material-ui/core/Badge';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
@@ -12,9 +10,8 @@ import { useHistory } from "react-router-dom";
 import MenuIcon from '@material-ui/icons/Menu';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-
-
-import Cart from "../Cart/Cart";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import GlobalData from "../Global/Global";
 
 const NavigationHeader = (props) => {
 
@@ -63,46 +60,38 @@ const NavigationHeader = (props) => {
         setAnchorEl(null);
     };
 
+    const {value} = useContext(GlobalData);
+
     return (
         <React.Fragment>
             <AppBar position="static" color="default" elevation={0} className={classes.appBar}>
                 <Toolbar className={classes.toolbar}>
 
-                    <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
+
+                    <Link variant="h6" color="inherit" noWrap className={classes.toolbarTitle} href="javascript:void(0)"  onClick={() => history.push("/")}>
                         Majang.lk
-
                             <IconButton edge="start" color="inherit" aria-label="menu" className={classes.menuButton} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                                <MenuIcon />
-                            </IconButton>
+                            <MenuIcon />
+                        </IconButton>
 
-                            <Menu
-                                id="simple-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                            >
-                                <MenuItem onClick={handleClose}>Paints</MenuItem>
-                                <MenuItem onClick={handleClose}>Spare parts</MenuItem>
-                                <MenuItem onClick={handleClose}>Stickers</MenuItem>
-                            </Menu>
-
-
-                    </Typography>
-
-
-
-
-
-
-
+                        <Menu
+                            id="simple-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                        >
+                            <MenuItem onClick={handleClose}>Paints</MenuItem>
+                            <MenuItem onClick={handleClose}>Spare parts</MenuItem>
+                            <MenuItem onClick={handleClose}>Stickers</MenuItem>
+                        </Menu>
+                    </Link>
                     <nav>
-                        {/*<IconButton aria-label="cart">*/}
-                        {/*    <StyledBadge badgeContent={4} color="secondary">*/}
-                        {/*        <ShoppingCartIcon />*/}
-                        {/*    </StyledBadge>*/}
-                        {/*</IconButton>*/}
-                        <Cart />
+                        <IconButton aria-label="cart" onClick={() => history.push("/cartNew")}>
+                            <StyledBadge badgeContent={value.totalItems} color="secondary">
+                                <ShoppingCartIcon />
+                            </StyledBadge>
+                        </IconButton>
                         <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() =>history.push("/")}>
                             Home
                         </Link>
@@ -118,18 +107,13 @@ const NavigationHeader = (props) => {
                         <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() => history.push("/checkout")}>
                             Checkout
                         </Link>
+                        <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() => history.push("/contact")}>
+                            Contact
+                        </Link>
                     </nav>
                 </Toolbar>
             </AppBar>
         </React.Fragment>
     )
 }
-
-
-
-//-------------------------------------------------------------------------Helping methods
-
-
-
-
 export default NavigationHeader;
