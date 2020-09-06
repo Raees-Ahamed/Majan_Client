@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core';
 
 import autoBind from "auto-bind"
-import '../../style/Example.scss';
+import '../../Assets/style/scss/Example.scss';
 
 
 
