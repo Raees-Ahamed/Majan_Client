@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -12,17 +12,18 @@ import CloseIcon from '@material-ui/icons/Close';
 import Link from "@material-ui/core/Link";
 import Button from '@material-ui/core/Button';
 import { styled } from '@material-ui/core/styles';
+import { useCookies } from 'react-cookie';
 
 function createData(code, image, name, quantity) {
     return { code, image, name, quantity };
 }
 
-const rows = [
-    createData('ITEM1', 'image', 'Paint', 100),
-    createData('ITEM2', 'image1', 'Paint1', 100),
-    createData('ITEM3', 'image2', 'Paint2', 100),
-    createData('ITEM4', 'image3', 'Paint3', 100),
-];
+// const rows = [
+//     createData('ITEM1', 'image', 'Paint', 100),
+//     createData('ITEM2', 'image1', 'Paint1', 100),
+//     createData('ITEM3', 'image2', 'Paint2', 100),
+//     createData('ITEM4', 'image3', 'Paint3', 100),
+// ];
 
 const columns = [
     {
@@ -80,6 +81,10 @@ const useStyles = makeStyles((theme) => ({
 
 const CartNew = (props) => {
 
+    const [cookies, setCookie] = useCookies(['cartItems']);
+
+    const rows = cookies.cartItems;
+
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -107,7 +112,7 @@ const CartNew = (props) => {
                                             align: x.align,
                                             minWidth: x.minWidth,
                                             fontWeight: 'bold',
-                                            textTransform: 'uppercase'
+                                            textTransform: 'uppercase',
                                         }}
                                     >
                                         {x.label}
@@ -116,16 +121,12 @@ const CartNew = (props) => {
                                 </TableCell>
 
                             ))}
-
-
                             <TableCell />
                             <TableCell />
-
-
                         </TableRow>
                     </TableHead>
-                    <TableBody>
 
+                    <TableBody>
                         {rows.map((x, i) =>
                         
                             row(
@@ -133,11 +134,9 @@ const CartNew = (props) => {
                                 i,
                                 columns)
                         )}
-
                     </TableBody>
                 </Table>
             </TableContainer>
-
         </Paper>
     );
 }
@@ -147,10 +146,9 @@ const row = (
     i,
     columns,
 ) => {
-
     return (
         <TableRow key={`tr-${i}`} selectable={false}>
-            <TableCell >
+            <TableCell>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
             </TableCell>
 
@@ -161,7 +159,7 @@ const row = (
             ))}
 
             <TableCell >
-                <BtnSeeMoreStyle variant="contained" >Selectt Option</BtnSeeMoreStyle>
+                <BtnSeeMoreStyle variant="contained" >Select Option</BtnSeeMoreStyle>
             </TableCell>
 
             <TableCell>
