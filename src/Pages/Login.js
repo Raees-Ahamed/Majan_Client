@@ -137,36 +137,6 @@ const Login = () => {
               </div>
             )}
 
-<<<<<<< HEAD
-                        <Button
-                            type="button"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                            onClick={() => loginHandler()}
-                        >
-                            Sign In
-                        </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link href="javascript:void(0)" variant="body2" onClick={() => history.push("/register")}>
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-                        </Grid>
-                        <Box mt={5}>
-                            <Footer />
-                        </Box>
-                    </form>
-                
-                </div>
-=======
             <Button
               type="button"
               fullWidth
@@ -192,7 +162,6 @@ const Login = () => {
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
->>>>>>> master
             </Grid>
             <Box mt={5}>
               <Footer />
