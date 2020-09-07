@@ -1,32 +1,10 @@
 import React from 'react';
-import { makeStyles } from "@material-ui/core/styles";
-import Container from '@material-ui/core/Container';
 import Carousel from 'react-material-ui-carousel';
-import {
-    Card,
-    CardContent,
-    CardMedia,
-    Typography,
-    Grid,
-    Button,
-    Checkbox,
-    FormControlLabel,
-    Radio,
-    RadioGroup,
-    FormLabel
-} from '@material-ui/core';
-
-import autoBind from "auto-bind"
+import {Card, CardMedia, Grid} from '@material-ui/core';
+import autoBind from "auto-bind";
 import '../../Assets/style/scss/Example.scss';
 
-
-
-
-
-
-
 function Banner(props) {
-    debugger;
     if (props.newProp) console.log(props.newProp)
     let items = [];
     const item = props.item
@@ -74,7 +52,6 @@ const items = [
 class SliderCarousel extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             autoPlay: true,
             timer: 500,
@@ -85,16 +62,12 @@ class SliderCarousel extends React.Component {
             navButtonsAlwaysInvisible: false,
             interval: 8000
         }
-
         autoBind(this);
     }
-
-
 
     render() {
         return (
             <div style={{ marginTop: "0px", color: "#494949", width: "100%" }}>
-
                 <Carousel
                     className="Example"
                     autoPlay={this.state.autoPlay}
@@ -106,23 +79,16 @@ class SliderCarousel extends React.Component {
                     navButtonsAlwaysInvisible={this.state.navButtonsAlwaysInvisible}
                     interval={this.state.interval}
                 >
-                    
                     {
                         items.map((item, index) => {
                             return <Banner item={item} key={index} />
                         })
                     }
                 </Carousel>
-
                 {"\n\n"}
-
-
             </div>
-
         )
     }
 }
-
-
 
 export default SliderCarousel;

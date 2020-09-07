@@ -23,8 +23,6 @@ const App = (props) => {
 
     let location = useLocation();
 
-    console.log(value.totalItems);
-
     return (
         <GlobalData.Provider value={{value, setValue}}>
             <NavigationHeader />
@@ -38,9 +36,6 @@ const App = (props) => {
               <Route path="/item" component={SingleItem} />
               <Route path="/cartNew" component={CartNew} />
               <Route path="/contact" component={Contact} />
-              {/* <Route path="/cart" component={Cart} /> */}
-
-
             </Switch>
             {(location.pathname === '/login') ?null : <Footer />}
         </GlobalData.Provider>

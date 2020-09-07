@@ -2,7 +2,6 @@
 import React from "react";
 import Carousel from "react-multi-carousel";
 import { Image } from "semantic-ui-react";
-
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -168,7 +167,7 @@ const responsive = {
   }
 };
 
-
+//Pass category id to the API to fetch top items
 const topItems = [
 
   {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -13,51 +13,58 @@ import Link from "@material-ui/core/Link";
 import Button from '@material-ui/core/Button';
 import { styled } from '@material-ui/core/styles';
 import { useCookies } from 'react-cookie';
+import TextField from '@material-ui/core/TextField';
+import GlobalData from "../Components/Global/Global";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 function createData(code, image, name, quantity) {
     return { code, image, name, quantity };
 }
 
-// const rows = [
-//     createData('ITEM1', 'image', 'Paint', 100),
-//     createData('ITEM2', 'image1', 'Paint1', 100),
-//     createData('ITEM3', 'image2', 'Paint2', 100),
-//     createData('ITEM4', 'image3', 'Paint3', 100),
-// ];
-
 const columns = [
     {
-        id: 'image',
-        label: 'image',
-        minWidth: 70,
+        id: 'item',
+        label: 'Item',
+        minWidth: 100,
         align: 'center',
         format: (value) => value.toLocaleString('en-US'),
     },
     {
         id: 'name',
-        label: 'name',
+        label: 'Name',
         minWidth: 50,
         align: 'center',
         format: (value) => value.toLocaleString('en-US'),
     },
     {
         id: 'quantity',
-        label: 'quantity',
-        minWidth: 50,
+        label: 'Quantity',
+        minWidth: 60,
         align: 'center',
         format: (value) => value.toLocaleString('en-US'),
     },
     {
-        id: 'addToCart',
-        label: 'Add To Cart',
-        minWidth: 50,
+        id: 'unitPrice',
+        label: 'Unit Price',
+        minWidth: 60,
+        align: 'center',
+        format: (value) => value.toLocaleString('en-US'),
+    },
+    {
+        id: 'totalPrice',
+        label: 'Total Price',
+        minWidth: 60,
         align: 'center',
         format: (value) => value.toLocaleString('en-US'),
     },
     {
         id: 'action',
-        label: 'action',
-        minWidth: 50,
+        label: 'Action',
+        minWidth: 60,
         align: 'center',
         format: (value) => value.toLocaleString('en-US'),
     }
@@ -67,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         marginLeft: 100,
         marginRight: 100,
-        marginTop: 20,
+        marginTop: 50,
 
     },
     container: {
@@ -75,28 +82,87 @@ const useStyles = makeStyles((theme) => ({
     },
     curveBtn:{
         borderRadius: "5em"
-
     }
 }));
 
-const CartNew = (props) => {
+const CartNew = () => {
 
-    const [cookies, setCookie] = useCookies(['cartItems']);
-
-    const rows = cookies.cartItems;
+    const [cookies, setCookie, removeCookie] = useCookies(['cartItems']);
 
     const classes = useStyles();
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+    const [getCartItems, setCartItems] = useState({items: cookies.cartItems});
+
+    const {value,setValue} = useContext(GlobalData);
+
+    const [open, setOpen] = React.useState(false);
+
+    const [getKey, setKey] = React.useState(-1);
+
+    const handleClickOpen = (key) => {
+        setKey(key);
+        setOpen(true);
     };
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
+    const handleClose = () => {
+        setOpen(false);
     };
+
+    const row = (x, i) => {
+        return (
+            <TableRow key={`tr-${i}`} selectable={false}>
+                <TableCell>
+                    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                </TableCell>
+
+                <TableCell>
+                    {x.name}
+                </TableCell>
+
+                <TableCell>
+                    <TextField id="filled-basic" variant="filled" value={x.qty} onChange={qtyHandler.bind(this, i)}/>
+                </TableCell>
+
+                <TableCell>
+                    {x.unitPrice}
+                </TableCell>
+
+                <TableCell>
+                    {x.unitPrice*x.qty}
+                </TableCell>
+
+                <TableCell>
+                    <Link variant="button" color="textPrimary" href="javascript:void(0)" onClick={() => handleClickOpen(i)}>
+                        <CloseIcon />
+                    </Link>
+                </TableCell>
+            </TableRow>
+        );
+    };
+
+    const qtyHandler = (key, event) => {
+        let newQty = event.target.value;
+        let itemCopy = {...getCartItems.items[key]};
+        itemCopy.qty = newQty;
+        const itemListCopy = [...getCartItems.items];
+        itemListCopy[key] = itemCopy;
+        setCartItems({items: itemListCopy});
+        setCookie('cartItems', JSON.stringify(itemListCopy));
+    }
+
+    const removeItemHandler = () => {
+        setOpen(false);
+        let itemsCopy = [...getCartItems.items];
+        itemsCopy.splice(getKey,1);
+        setCartItems({items: itemsCopy});
+        setCookie('cartItems', JSON.stringify(itemsCopy));
+        if(itemsCopy.length == 0){
+            removeCookie('cartItems');
+        }
+        setValue({
+            totalItems:  itemsCopy.length
+        })
+    }
 
     return (
         <Paper className={classes.root}>
@@ -127,50 +193,41 @@ const CartNew = (props) => {
                     </TableHead>
 
                     <TableBody>
-                        {rows.map((x, i) =>
-                        
-                            row(
-                                x,
-                                i,
-                                columns)
-                        )}
+                        {
+                            (cookies.cartItems) ? (
+                                getCartItems.items.map((x, i) =>
+                                    row(x, i)
+                                )
+                            ) : 'Empty Cart'
+                        }
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Please confirm"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Do you really need to delete this item?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => removeItemHandler()} color="primary" autoFocus>
+                        Yes
+                    </Button>
+                    <Button onClick={handleClose} color="primary">
+                        No
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Paper>
     );
 }
-
-const row = (
-    x,
-    i,
-    columns,
-) => {
-    return (
-        <TableRow key={`tr-${i}`} selectable={false}>
-            <TableCell>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </TableCell>
-
-            {columns.slice(-4,-2).map((y, k) => (
-                <TableCell key={`trc-${k}`}>
-                    {y.format && typeof x[y.id] === 'number' ? y.format(x[y.id]) : x[y.id]}
-                </TableCell>
-            ))}
-
-            <TableCell >
-                <BtnSeeMoreStyle variant="contained" >Select Option</BtnSeeMoreStyle>
-            </TableCell>
-
-            <TableCell>
-                <Link variant="button" color="textPrimary" href="javascript:void(0)">
-                    <CloseIcon />
-                </Link>
-            </TableCell>
-        </TableRow>
-    );
-};
-
 
 const BtnSeeMoreStyle = styled(Button)({
     backgroundColor:'#A749FF',

@@ -66,8 +66,6 @@ const NavigationHeader = (props) => {
         <React.Fragment>
             <AppBar position="static" color="default" elevation={0} className={classes.appBar}>
                 <Toolbar className={classes.toolbar}>
-
-
                     <Link variant="h6" color="inherit" noWrap className={classes.toolbarTitle} href="javascript:void(0)"  onClick={() => history.push("/")}>
                         Majang.lk
                             <IconButton edge="start" color="inherit" aria-label="menu" className={classes.menuButton} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
