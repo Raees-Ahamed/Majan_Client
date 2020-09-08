@@ -1,7 +1,6 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
@@ -18,6 +17,15 @@ import TextField from '@material-ui/core/TextField';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import { useCookies } from 'react-cookie';
 import GlobalData from "../Components/Global/Global";
+import axios from "axios";
+import * as AppGlobal from "../AppHelp/AppGlobal";
+import NumberFormat from 'react-number-format';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,9 +40,6 @@ const useStyles = makeStyles((theme) => ({
         width: 200,
         paddingTop: '56.25%', // 16:9
         marginTop:'30'
-    },
-    avatar: {
-        backgroundColor: red[500],
     },
     itemDescriptionSize: {
         fontSize:'18px'
@@ -59,26 +64,50 @@ const useStyles = makeStyles((theme) => ({
         isImageComponentShow: null
     });
 
+    const [getItemDetails, setItemDetails] = useState({details: []});
+
+     const [getImages, setImages] = useState({images: []});
+
      const {value,setValue} = useContext(GlobalData);
 
-    // const [getTotalItems, setTotalItems] = useState({
-    //      totalItems: cookies.cartItems.length
-    // })
+     const [open, setOpen] = React.useState(false);
 
-     const [getQty, setQty] = useState({
-         qty: 0
-     })
+     const queryString = window.location.search;
 
-     let images = [
-         {
-             url:"https://unsplash.it/800/300?image=1",
-             title:"image title 1"
-         },
-         {
-             url:"https://unsplash.it/300/800?image=2",
-             title:"image title 2"
+     const urlParams = new URLSearchParams(queryString);
+
+     const itemId = urlParams.get('id');
+
+     const [getQty, setQty] = useState({qty: ""})
+
+     useEffect(() => {
+         if(itemId == null){
+             alert('Invalid');
+         }else{
+             axios.get(AppGlobal.apiBaseUrl + `Product/${itemId}`).then(function (response) {
+                 const details = [
+                     {
+                         name :response.data.name,
+                         description :response.data.description,
+                         unitPrice :response.data.originPrice,
+                         availableqty :response.data.availableQuantity
+                     }
+                 ]
+                 setItemDetails({details: details});
+
+                 setQty({qty: '8'});
+
+                 setImages({images:[
+                         {url: response.data.imageUrl1},
+                         {url: response.data.imageUrl2},
+                         {url: response.data.imageUrl3},
+                         {url: response.data.imageUrl4}
+                         ]});
+             })
          }
-     ]
+     },[]);
+
+     let images = getImages.images;
 
      const handleClose = () => {
          setImageComponent({isImageComponentShow: null})
@@ -93,6 +122,7 @@ const useStyles = makeStyles((theme) => ({
      }
 
      const addToCart = () => {
+         setOpen(true);
          let newItem = "";
          let qty = getQty.qty;
         if(cookies.cartItems){
@@ -110,6 +140,12 @@ const useStyles = makeStyles((theme) => ({
          setValue({
              totalItems: (typeof(cookies.cartItems) !== 'undefined') ? cookies.cartItems.length : 1
          })
+
+         setTimeout(function(){ setOpen(false); }, 2500);
+     }
+
+     if(getItemDetails.details.length > 0){
+         console.log(getItemDetails.details[0]);
      }
 
     return (
@@ -117,24 +153,20 @@ const useStyles = makeStyles((theme) => ({
             <main>
                 <Container maxWidth="md">
                     <Card className={classes.root}>
-                        <CardHeader
-                            avatar={
-                                <div>
-                                    <h1>Shrimp and Chorizo Paella</h1>
-                                    <h2>Available Quantity: 6</h2>
-                                </div>
-                            }
-                        />
+                        <Container>
+                            <p style={{'fontSize':'20px'}}>{(getItemDetails.details.length > 0) ? getItemDetails.details[0].name : ""}</p>
+                            <p style={{'fontSize':'20px'}}>Available Quantity: {(getItemDetails.details.length > 0) ? getItemDetails.details[0].availableqty : ""}</p>
+                            <p style={{'fontSize':'20px'}}>Unit Price: {(getItemDetails.details.length > 0) ? <NumberFormat value={getItemDetails.details[0].unitPrice} displayType={'text'} thousandSeparator={true} prefix={'Rs '} /> : ""}</p>
+                        </Container><br/><br/>
 
                         <Grid item xs={12}>
                             <Grid container justify="center" spacing={2}>
-                                {[0, 1, 2,3].map((value) => (
+                                {getImages.images.map((image) => (
                                     <Grid key={value} item>
                                         <Paper className={classes.paper} >
                                             <CardMedia
                                                 className={classes.media}
-                                                image="https://source.unsplash.com/random"
-                                                title="Paella dish"
+                                                image={image.url}
                                             />
                                         </Paper>
                                     </Grid>
@@ -159,12 +191,11 @@ const useStyles = makeStyles((theme) => ({
 
                         <CardContent>
                             <Typography variant="body2" color="textSecondary" component="p" className={classes.itemDescriptionSize}>
-                                This impressive paella is a perfect party dish and a fun meal to cook together with your
-                                guests. Add 1 cup of frozen peas along with the mussels, if you like.
+                                {(getItemDetails.details.length > 0) ? getItemDetails.details[0].description : ""}
                             </Typography>
                         </CardContent>
                         <CardActions disableSpacing>
-                            <TextField id="outlined-basic" label="Quantity" defaultValue='6' variant="outlined" onChange={addQty}/>
+                            <TextField id="outlined-basic" label="Quantity" defaultValue= {getQty.qty} variant="outlined" onChange={addQty}/>
                             <Button
                                 variant="contained"
                                 color="primary"
@@ -179,6 +210,20 @@ const useStyles = makeStyles((theme) => ({
                     </Card>
                 </Container>
             </main>
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Success"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Item successfully added to the cart.
+                    </DialogContentText>
+                </DialogContent>
+            </Dialog>
         </React.Fragment>
     );
  }
