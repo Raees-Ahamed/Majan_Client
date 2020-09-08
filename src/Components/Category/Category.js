@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -6,83 +6,63 @@ import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-
 import "semantic-ui-css/semantic.min.css";
 import "react-multi-carousel/lib/styles.css";
 import "./style.css";
 import UAParser from "ua-parser-js";
 import CategoryItems from "./CategoryItems";
 import Section from "./Section";
-
-
 import { styled } from '@material-ui/core/styles';
-
-
+import { useHistory } from "react-router-dom";
+import axios from 'axios';
+import * as AppGlobal from "../../AppHelp/AppGlobal";
 
 const Category = ({ deviceType }) => {
 
   const classes = useStyles();
+  let history = useHistory();
   const bull = <span className={classes.bullet}>•</span>;
+
+  const goToCategoryProducrs = (id) => {
+    history.push(`/shop?category=${id}`);
+  }
+
+  const [getCategories, setCategories] = useState({
+      categories: []
+  })
+
+  useEffect(() => {
+    axios.get(AppGlobal.apiBaseUrl + 'Category').then(function (response) {
+      setCategories({categories: response.data});
+    })
+  },[]);
 
   return (
     <Grid className={classes.root}  >
-
       <Typography variant="h5" component="h2" className={classes.__categoryHeader}>
         Best Selling Products
-        </Typography>
-
-      {categories.map((category) => (
-
-        <Card className={classes.card}>
-          <CardContent>
-
-            <React.Fragment>
-              <Section>
-                <CategoryItems deviceType={deviceType} category={category} />
-              </Section>
-
-            </React.Fragment>
-
-          </CardContent>
-          <CardActions className={classes.footer}>
-            <BtnSeeMoreStyle>See More</BtnSeeMoreStyle>
-          </CardActions>
-        </Card>
-
-      ))}
+      </Typography>
+      {(getCategories.categories) ? (
+            getCategories.categories.map((category) => (
+              <Card className={classes.card}>
+                <CardContent>
+                  <React.Fragment>
+                    <Section>
+                      <CategoryItems deviceType={deviceType} category={category} />
+                    </Section>
+                  </React.Fragment>
+                </CardContent>
+                <CardActions className={classes.footer}>
+                  <BtnSeeMoreStyle onClick={() => goToCategoryProducrs(category._id)}>See More</BtnSeeMoreStyle>
+                </CardActions>
+              </Card>
+            ))
+        ) : null
+      }
     </Grid>
   );
 };
 
-
-
-//------------------------------------------------------------------------------------------Obejcts
-
-const categories = [
-
-  {
-    categoryId: 1,
-    categoryName: 'Automotive Care'
-  },
-  {
-    categoryId: 2,
-    categoryName: 'Automotive Paint'
-  },
-  {
-    categoryId: 3,
-    categoryName: 'Automotive Modifykits'
-  },
-  {
-    categoryId: 4,
-    categoryName: 'Automotive SpareParts'
-  }
-
-
-]
-
-
-
-//-------------------------------------------------------------------------------------------Helping methods
 
 Category.getInitialProps = ({ req }) => {
   let userAgent;
@@ -125,12 +105,7 @@ const useStyles = makeStyles((theme) => ({
   card: {
     marginBottom: '60px'
   }
-
-
-
 }));
-
-
 
 const BtnSeeMoreStyle = styled(Button)({
   background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
@@ -141,7 +116,5 @@ const BtnSeeMoreStyle = styled(Button)({
   height: 40,
   padding: '0 30px',
 });
-
-
 
 export default Category;

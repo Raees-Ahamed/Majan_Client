@@ -146,7 +146,6 @@ const Register = () => {
                             />
                         </Grid>
                     </Grid>
-
                     {
                         (getUserStatus.status == null) ? '' : (
                             (getUserStatus.status == 1) ?
@@ -180,11 +179,4 @@ const Register = () => {
         </Container>
     );
 }
-
-
-
-
-
-
-
 export default Register;
