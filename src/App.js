@@ -14,6 +14,7 @@ import { useCookies } from 'react-cookie';
 import CartNew from "./Pages/CartNew";
 import Contact from "./Pages/Contact";
 import Cart from "./Components/Cart/Cart";
+import OrderHistory from './Pages/OrderHistory';
 
 const App = (props) => {
 
@@ -36,6 +37,7 @@ const App = (props) => {
               <Route path="/item" component={SingleItem} />
               <Route path="/cartNew" component={CartNew} />
               <Route path="/contact" component={Contact} />
+              <Route path="/orderhistory" component={OrderHistory}/>
             </Switch>
             {(location.pathname === '/login') ?null : <Footer />}
         </GlobalData.Provider>

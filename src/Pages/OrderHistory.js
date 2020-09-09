@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useCookies } from 'react-cookie';
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -11,12 +12,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
 import Pagination from "@material-ui/lab/Pagination";
 import axios from "axios";
-import * as AppGlobal from "../../AppHelp/AppGlobal";
+import * as AppGlobal from "../AppHelp/AppGlobal";
 import NumberFormat from "react-number-format";
 import SearchIcon from "@material-ui/icons/Search";
 import { useHistory } from "react-router-dom";
 
-const GridItems = (props) => {
+const OrderHistory = () => {
   const useStyles = makeStyles((theme) => ({
     cardGrid: {
       paddingTop: theme.spacing(8),
@@ -38,63 +39,62 @@ const GridItems = (props) => {
       float: "right",
     },
   }));
+
   let history = useHistory();
   const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const categoryId = urlParams.get("category");
 
-  const filterItems = (searchString) => {
-    let currentProducts = getItems.products;
-    let copyOfCurrentItems = [...currentProducts];
+  //   const filterItems = (searchString) => {
+  //     let currentProducts = getItems.products;
+  //     let copyOfCurrentItems = [...currentProducts];
 
-    let filteredItems = [];
+  //     let filteredItems = [];
 
-    let searchingString = searchString.replace(/\s+/g, "").toLowerCase();
+  //     let searchingString = searchString.replace(/\s+/g, "").toLowerCase();
 
-    copyOfCurrentItems.map((product) => {
-      let productName = product.name.replace(/\s+/g, "").toLowerCase();
-      let productDesc = product.description.replace(/\s+/g, "").toLowerCase();
+  //     copyOfCurrentItems.map((order) => {
+  //       let order = product.name.replace(/\s+/g, "").toLowerCase();
+  //       let productDesc = product.description.replace(/\s+/g, "").toLowerCase();
 
-      if (
-        productName.includes(searchingString) ||
-        productDesc.includes(searchingString)
-      ) {
-        filteredItems.push(product);
-      }
-    });
+  //       if (
+  //         productName.includes(searchingString) ||
+  //         productDesc.includes(searchingString)
+  //       ) {
+  //         filteredItems.push(product);
+  //       }
+  //     });
 
-    if (searchingString != "" && filteredItems.length == 0) {
-      setTemporaryItems({ products: "Empty data" });
-    } else {
-      setTemporaryItems({ products: filteredItems });
-    }
-  };
+  //     if (searchingString != "" && filteredItems.length == 0) {
+  //       setTemporaryItems({ products: "Empty data" });
+  //     } else {
+  //       setTemporaryItems({ products: filteredItems });
+  //     }
+  //   };
 
+  const [cookies, setCookie, removeCookie] = useCookies(["jwtToken"]);
   const [getItems, setItems] = useState({
-    products: [],
+    orders: [],
   });
 
   useEffect(() => {
-    if (categoryId == null) {
-      axios.get(AppGlobal.apiBaseUrl + "Product").then(function (response) {
+      console.log(cookies.jwtToken);
+    axios
+      .get(AppGlobal.apiBaseUrl + "Order/History", {
+        headers: {
+          "Content-Type": "application/json",
+          "x-jwt-token": cookies.jwtToken,
+        },
+      })
+      .then(function (response) {
         console.log(response.data);
         setItems({ products: response.data });
       });
-    } else {
-      axios
-        .get(AppGlobal.apiBaseUrl + `ProductCategory/${categoryId}`)
-        .then(function (response) {
-          console.log(response.data);
-          setItems({ products: response.data });
-        });
-    }
   }, []);
 
-  const [getTemporaryItems, setTemporaryItems] = useState({ products: [] });
+  const [getTemporaryItems, setTemporaryItems] = useState({ orders: [] });
 
   const classes = useStyles();
 
-  props.biRef.callToGridItems = filterItems;
+  //props.biRef.callToGridItems = filterItems;
 
   const [page, setPage] = useState(1);
 
@@ -108,7 +108,7 @@ const GridItems = (props) => {
 
   let gridItems = null;
 
-  if (getTemporaryItems.products == "Empty data") {
+  if (getTemporaryItems.orders == "Empty data") {
     gridItems = (
       <Container maxWidth={false} style={{ alignItems: "center" }}>
         <Alert
@@ -120,8 +120,8 @@ const GridItems = (props) => {
         </Alert>
       </Container>
     );
-  } else if (getTemporaryItems.products.length > 0) {
-    gridItems = getTemporaryItems.products.map((product) => {
+  } else if (getTemporaryItems.orders.length > 0) {
+    gridItems = getTemporaryItems.orders.map((product) => {
       return (
         <Grid item key={product.id} xs={6} sm={4} md={3}>
           <Card className={classes.card}>
@@ -167,7 +167,7 @@ const GridItems = (props) => {
       );
     });
   } else {
-    gridItems = getItems.products.map((product) => {
+    gridItems = getItems.orders.map((product) => {
       return (
         <Grid item key={product.id} xs={6} sm={4} md={3}>
           <Card className={classes.card}>
@@ -218,7 +218,6 @@ const GridItems = (props) => {
       );
     });
   }
-
   return (
     <React.Fragment>
       <Container className={classes.cardGrid} maxWidth={false}>
@@ -231,7 +230,7 @@ const GridItems = (props) => {
       <Container maxWidth={false} style={{ float: "right" }}>
         <div className={classes.paginationMargin}>
           <Pagination
-            count={getItems.products.length}
+            count={getItems.orders.length}
             page={page}
             color="primary"
             onChange={handlePagination}
@@ -242,4 +241,4 @@ const GridItems = (props) => {
   );
 };
 
-export default GridItems;
+export default OrderHistory;
