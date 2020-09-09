@@ -64,8 +64,9 @@ function getStepContent(step) {
     }
 }
 
-const Checkout = () => {
+const Checkout = (props) => {
     const classes = useStyles();
+
     const [activeStep, setActiveStep] = React.useState(0);
 
     const handleNext = () => {

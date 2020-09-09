@@ -12,6 +12,7 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import axios from "axios";
 import * as AppGlobal from "../../AppHelp/AppGlobal";
+import NumberFormat from 'react-number-format';
 
 const CustomButtonGroupAsArrows = (props, { next, previous}) => {
 
@@ -101,10 +102,10 @@ const CategoryItems = ({ deviceType , category }) => {
                     />
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="h7" color="textDanger">
-                        {topItem.price}
+                        <NumberFormat value={topItem.unitPrice} displayType={'text'} thousandSeparator={true} prefix={`${topItem.currency} `} />
                       </Typography>
                       <Typography variant="body2" color="textSecondary" component="p">
-                        {topItem.item}
+                        {topItem.name}
                       </Typography>
                     </CardContent>
                   </CardActionArea>
