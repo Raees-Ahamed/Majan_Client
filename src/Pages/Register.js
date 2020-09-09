@@ -13,6 +13,7 @@ import {useHistory} from "react-router-dom";
 import axios from 'axios';
 import * as AppGlobal from "../AppHelp/AppGlobal";
 import Alert from '@material-ui/lab/Alert';
+import firebase from '../Firebase';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -43,6 +44,10 @@ const Register = () => {
     const [getConfPwdValue, setConfPwdValue] = useState({confPassword : ''})
     const [getUserStatus,setUserStatus] = useState({ status: null });
     const [getErrorMsg, setErrorMsg] = useState({msg:''});
+    const [getMobileNumberValue, setMobileNumberValue] = useState({ mobileNumber: 0 });
+    const [phoneFieldStatus, setphoneFieldStatus] = useState({ isError: false });
+
+    const [getButtonStatus, setButtonStatus] = useState(false);
 
     const classes = useStyles();
     let history = useHistory();
@@ -54,20 +59,74 @@ const Register = () => {
             email : getEmailValue,
             password : getPwdValue,
             confPassword : getConfPwdValue,
+            mobile: getMobileNumberValue,
             usertype: 1
         }
         console.log(formData);
+        onSignInSubmit();
+        // axios.post(AppGlobal.apiBaseUrl+'User/',  formData )
+        //     .then(res => {
+        //         if(res.data.respondId == 0){
+        //             setErrorMsg({msg:res.data.description})
+        //             setUserStatus({status:0})
+        //         }else{
+        //             setErrorMsg({msg:res.data.description})
+        //             setUserStatus({status:1})
+        //         }
+        //     })
+    }
 
-        axios.post(AppGlobal.apiBaseUrl+'User/',  formData )
-            .then(res => {
-                if(res.data.respondId == 0){
-                    setErrorMsg({msg:res.data.description})
-                    setUserStatus({status:0})
-                }else{
-                    setErrorMsg({msg:res.data.description})
-                    setUserStatus({status:1})
-                }
+    const setUpRecaptcha = () => {
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recptcha-container', {
+            'size': 'invisible',
+            'callback': function (response) {
+                // reCAPTCHA solved, allow signInWithPhoneNumber.
+                onSignInSubmit();
+            }
+        });
+    }
+
+    const onSignInSubmit = (phoneNo) => {
+
+        setUpRecaptcha();
+
+        var phoneNumber = phoneNo;
+        var appVerifier = window.recaptchaVerifier;
+        firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+            .then(function (confirmationResult) {
+                // SMS sent. Prompt user to type the code from the message, then sign the
+                // user in with confirmationResult.confirm(code).
+                window.confirmationResult = confirmationResult;
+
+                var code = window.prompt("Enter OTP");
+                confirmationResult.confirm(code).then(function (result) {
+                    var user = result.user;
+                    console.log("User signIn " + JSON.stringify(user));
+                }).catch(function (error) {
+                    // User couldn't sign in (bad verification code?)
+                    // ...
+                });
+            }).catch(function (error) {
+            // Error; SMS not sent
+            // ...
+        });
+    }
+
+    const verifyPhoneNo = () => {
+        if(getMobileNumberValue.mobileNumber == 0){
+            setphoneFieldStatus({isError: true});
+        }else{
+            setphoneFieldStatus({isError: false});
+            let phone  = getMobileNumberValue.replace(/^0+/, '');
+            axios.get('https://api.ipify.org/').then(function (response) {
+                let myIpAddress = response.data;
+                axios.get(`http://api.ipstack.com/${myIpAddress}?access_key=f6c8a6a448c64f19008330fd0afea4f0`).then(function (response) {
+                    let callingCode = '+'+response.data.location.calling_code;
+                    let stdPhoneNo = callingCode+''+phone;
+                    onSignInSubmit(stdPhoneNo);
+                })
             })
+        }
     }
 
     return (
@@ -145,6 +204,21 @@ const Register = () => {
                                 onChange={event => setConfPwdValue(event.target.value)}
                             />
                         </Grid>
+
+                        <Grid item xs={12}>
+                            <TextField
+                                error = {phoneFieldStatus.isError}
+                                variant="outlined"
+                                required
+                                fullWidth
+                                name="mobileNumber"
+                                label="mobileNumber"
+                                type="text"
+                                id="mobileNumber"
+                                onChange={event => setMobileNumberValue(event.target.value)}
+                                InputProps={{endAdornment: <Button variant="contained" size="medium" color="primary" className={classes.margin} onClick={verifyPhoneNo}>Verify</Button>}}
+                            />
+                        </Grid>
                     </Grid>
                     {
                         (getUserStatus.status == null) ? '' : (
@@ -164,6 +238,7 @@ const Register = () => {
                         color="primary"
                         className={classes.submit}
                         onClick={()=>submitRegisterHandler()}
+                        disabled = 'false'
                     >
                         Sign Up
                     </Button>
@@ -174,6 +249,7 @@ const Register = () => {
                             </Link>
                         </Grid>
                     </Grid>
+                    <div id="recptcha-container"></div>
                 </form>
             </div>
         </Container>
