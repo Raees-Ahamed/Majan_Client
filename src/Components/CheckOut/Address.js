@@ -40,15 +40,6 @@ const Address = () => {
                         autoComplete="shipping address-line1"
                     />
                 </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        id="address2"
-                        name="address2"
-                        label="Address line 2"
-                        fullWidth
-                        autoComplete="shipping address-line2"
-                    />
-                </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
                         required
@@ -60,27 +51,7 @@ const Address = () => {
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <TextField id="state" name="state" label="State/Province/Region" fullWidth />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        required
-                        id="zip"
-                        name="zip"
-                        label="Zip / Postal code"
-                        fullWidth
-                        autoComplete="shipping postal-code"
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        required
-                        id="country"
-                        name="country"
-                        label="Country"
-                        fullWidth
-                        autoComplete="shipping country"
-                    />
+                    <TextField id="phone" name="phone" label="Contact No" fullWidth />
                 </Grid>
             </Grid>
         </React.Fragment>
