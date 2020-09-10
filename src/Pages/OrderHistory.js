@@ -34,7 +34,6 @@ class OrderHistory extends Component {
 
   loadOrderHistory() {
     const {cookies} = this.props;
-    console.log(cookies.get('jwtToken'));
     axios.get(AppGlobal.apiBaseUrl + "Order/History", {
         headers: {
           "Content-Type": "application/json",

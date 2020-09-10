@@ -15,6 +15,7 @@ import CartNew from "./Pages/CartNew";
 import Contact from "./Pages/Contact";
 import Cart from "./Components/Cart/Cart";
 import OrderHistory from "./Pages/OrderHistory";
+import ForgotPassword from './Pages/ForgotPassword';
 import { CookiesProvider } from "react-cookie";
 
 const App = (props) => {
@@ -42,6 +43,7 @@ const App = (props) => {
           <Route path="/cartNew" component={CartNew} />
           <Route path="/contact" component={Contact} />
           <Route path="/orderhistory" component={OrderHistory} />
+          <Route path="/forgotPassword" component={ForgotPassword}/>
         </Switch>
         {location.pathname === "/login" ? null : <Footer />}
       </CookiesProvider>

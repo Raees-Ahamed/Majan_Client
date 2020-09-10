@@ -80,8 +80,6 @@ const Register = () => {
             usertype: 1
         }
 
-        console.log(formData);
-
         try{
             let result = await axios.post(AppGlobal.apiBaseUrl + 'User',formData);
             console.log(result);
