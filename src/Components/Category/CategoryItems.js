@@ -1,34 +1,25 @@
-
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Carousel from "react-multi-carousel";
-import { Image } from "semantic-ui-react";
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
-
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import axios from "axios";
+import * as AppGlobal from "../../AppHelp/AppGlobal";
+import NumberFormat from 'react-number-format';
 
-
-
-
-
-const CustomButtonGroupAsArrows = ({ next, previous }) => {
+const CustomButtonGroupAsArrows = (props, { next, previous}) => {
 
   const classes = useStyles();
 
   return (
-
     <React.Fragment>
-
       <div
         style={{
           position: 'absolute',
@@ -37,11 +28,10 @@ const CustomButtonGroupAsArrows = ({ next, previous }) => {
         }}
       >
           <Typography variant="h6" component="h1" className={classes.__categorySubHeader}>
-            Automotive Care
+            {props.categoryName}
         </Typography>
 
       </div>
-
 
       <div
         style={{
@@ -57,32 +47,30 @@ const CustomButtonGroupAsArrows = ({ next, previous }) => {
         <IconButton aria-label="Nect" onClick={next}>
           <ArrowForwardIosIcon fontSize="small" />
         </IconButton>
-
       </div>
-
     </React.Fragment>
-
-
-
-
   );
 };
 
 
 const CategoryItems = ({ deviceType , category }) => {
-
   const classes = useStyles();
 
+  const [getTopItems, setTopItems] = useState({topItems: []});
+
+  useEffect(() => {
+    axios.get(AppGlobal.apiBaseUrl + `Selling/${category._id}`).then(function (response) {
+      setTopItems({topItems: response.data});
+    })
+  },[]);
 
   return (
-
     <div
       style={{
         position: 'relative',
         top: 0
       }}
     >
-
       <Carousel
         ssr
         partialVisbile
@@ -93,19 +81,15 @@ const CategoryItems = ({ deviceType , category }) => {
         arrows={false}
         autoPlay
         infinite
-        customButtonGroup={<CustomButtonGroupAsArrows />}
+        customButtonGroup={<CustomButtonGroupAsArrows categoryName={category.categoryName}/>}
         renderButtonGroupOutside
       >
-
-
-        {topItems.map(topItem => {
+        {getTopItems.topItems.map(topItem => {
           return (
-
             <div
               style={{
                 marginTop: 50
               }}
-
             >
               <Grid>
                 <Card className={classes.card} border={0} >
@@ -113,42 +97,28 @@ const CategoryItems = ({ deviceType , category }) => {
                     <CardMedia
                       component="img"
                       height="140"
-                      image={topItem.imageUrl}
+                      image={topItem.imageUrl1}
                       title={topItem.item}
                     />
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="h7" color="textDanger">
-                        {topItem.price}
+                        <NumberFormat value={topItem.unitPrice} displayType={'text'} thousandSeparator={true} prefix={`${topItem.currency} `} />
                       </Typography>
                       <Typography variant="body2" color="textSecondary" component="p">
-                        {topItem.item}
+                        {topItem.name}
                       </Typography>
                     </CardContent>
                   </CardActionArea>
                 </Card>
               </Grid>
             </div>
-
-
           );
         })}
-
       </Carousel>
     </div>
-
   );
 };
-
-
-
-
-
-
-
-
-
 //----------------------------------------------------------------------------------------------------Objects
-
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
@@ -166,97 +136,7 @@ const responsive = {
     paritialVisibilityGutter: 30
   }
 };
-
-//Pass category id to the API to fetch top items
-const topItems = [
-
-  {
-
-    price: '300',
-    originPrice: '400',
-    currency: 'Lkr',
-    item: 'Solor panel with 100 ml panel',
-    imageUrl: 'https://images.unsplash.com/photo-1549396535-c11d5c55b9df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60'
-
-  },
-  {
-
-    price: '300',
-    originPrice: '400',
-    currency: 'Lkr',
-    item: 'Solor panel with 100 ml panel',
-    imageUrl: 'https://images.unsplash.com/photo-1549396535-c11d5c55b9df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60'
-
-  },
-  {
-
-    price: '300',
-    originPrice: '400',
-    currency: 'Lkr',
-    item: 'Solor panel with 100 ml panel',
-    imageUrl: 'https://images.unsplash.com/photo-1549396535-c11d5c55b9df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60'
-
-  },
-  {
-
-    price: '300',
-    originPrice: '400',
-    currency: 'Lkr',
-    item: 'Solor panel with 100 ml panel',
-    imageUrl: 'https://images.unsplash.com/photo-1549396535-c11d5c55b9df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60'
-
-  },
-  {
-
-    price: '300',
-    originPrice: '400',
-    currency: 'Lkr',
-    item: 'Solor panel with 100 ml panel',
-    imageUrl: 'https://images.unsplash.com/photo-1549396535-c11d5c55b9df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60'
-
-  },
-  {
-
-    price: '300',
-    originPrice: '400',
-    currency: 'Lkr',
-    item: 'Solor panel with 100 ml panel',
-    imageUrl: 'https://images.unsplash.com/photo-1549396535-c11d5c55b9df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60'
-
-  },
-  {
-
-    price: '300',
-    originPrice: '400',
-    currency: 'Lkr',
-    item: 'Solor panel with 100 ml panel',
-    imageUrl: 'https://images.unsplash.com/photo-1549396535-c11d5c55b9df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60'
-
-  },
-  {
-
-    price: '300',
-    originPrice: '400',
-    currency: 'Lkr',
-    item: 'Solor panel with 100 ml panel',
-    imageUrl: 'https://images.unsplash.com/photo-1549396535-c11d5c55b9df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60'
-
-  },
-  {
-
-    price: '300',
-    originPrice: '400',
-    currency: 'Lkr',
-    item: 'Solor panel with 100 ml panel',
-    imageUrl: 'https://images.unsplash.com/photo-1549396535-c11d5c55b9df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60'
-
-  }
-
-];
-
-
 //-----------------------------------------------------------------------------------------------------Helping methods
-
 const useStyles = makeStyles((theme) => ({
   card: {
     flexGrow: 1,
@@ -269,13 +149,4 @@ const useStyles = makeStyles((theme) => ({
     ...theme.typography.button
   }
 }));
-
-
-
-// const getBestSellingItems = getBestSellingItems((category) =>({
-// }))
-
-
-
-
 export default CategoryItems;

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {Component} from 'react';
 import Carousel from 'react-material-ui-carousel';
 import {Card, CardMedia, Grid} from '@material-ui/core';
 import autoBind from "auto-bind";
 import '../../Assets/style/scss/Example.scss';
+import axios from "axios";
+import * as AppGlobal from "../../AppHelp/AppGlobal";
 
 function Banner(props) {
     if (props.newProp) console.log(props.newProp)
@@ -31,6 +33,7 @@ function Banner(props) {
     )
 }
 
+
 const items = [
 
     {
@@ -49,23 +52,37 @@ const items = [
 
 ]
 
-class SliderCarousel extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            autoPlay: true,
-            timer: 500,
-            animation: "fade",
-            indicators: true,
-            timeout: 500,
-            navButtonsAlwaysVisible: false,
-            navButtonsAlwaysInvisible: false,
-            interval: 8000
-        }
-        autoBind(this);
+class SliderCarousel extends Component {
+    // constructor(props) {
+    //     super(props);
+    // }
+
+    // let headerImages = [];
+    // axios.get(AppGlobal.apiBaseUrl + 'Dashbord').then(function (response) {
+    //     headerImages = response.data;
+    // })
+
+    state = {
+        autoPlay: true,
+        timer: 500,
+        animation: "fade",
+        indicators: true,
+        timeout: 500,
+        navButtonsAlwaysVisible: false,
+        navButtonsAlwaysInvisible: false,
+        interval: 8000,
+        items: []
     }
 
     render() {
+        // if(this.state.items != []){
+        //     axios.get(AppGlobal.apiBaseUrl + 'Dashbord').then(function (response) {
+        //         console.log(response.data);
+        //         this.setState({items: response.data});
+        //     })
+        // }else{
+        //     alert('here');
+        // }
         return (
             <div style={{ marginTop: "0px", color: "#494949", width: "100%" }}>
                 <Carousel
@@ -80,9 +97,11 @@ class SliderCarousel extends React.Component {
                     interval={this.state.interval}
                 >
                     {
+                        (items) ? (
                         items.map((item, index) => {
                             return <Banner item={item} key={index} />
                         })
+                        ) : null
                     }
                 </Carousel>
                 {"\n\n"}

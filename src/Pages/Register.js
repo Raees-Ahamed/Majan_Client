@@ -14,6 +14,7 @@ import axios from 'axios';
 import * as AppGlobal from "../AppHelp/AppGlobal";
 import Alert from '@material-ui/lab/Alert';
 import firebase from '../Firebase';
+import { useCookies } from 'react-cookie';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -37,67 +38,109 @@ const useStyles = makeStyles((theme) => ({
 
 const Register = () => {
 
-    const [getFirstNameValue, setFirstNameValue] = useState({ firstName: '' })
-    const [getLastNameValue, setLastNameValue] = useState({ lastName: '' })
-    const [getEmailValue, setEmailValue] = useState({ email: '' })
-    const [getPwdValue, setPwdValue] = useState({ password: '' })
-    const [getConfPwdValue, setConfPwdValue] = useState({ confPassword: '' })
-    const [getUserStatus, setUserStatus] = useState({ status: null });
-    const [getErrorMsg, setErrorMsg] = useState({ msg: '' });
-    const [getMobileNumberValue, setMobileNumberValue] = useState({ mobileNumber: 0 });
+    const [cookies, setCookie, removeCookie] = useCookies(['jwtToken']);
 
+    const [getFirstNameValue, setFirstNameValue] = useState('')
+    const [getLastNameValue, setLastNameValue] = useState('')
+    const [getEmailValue, setEmailValue] = useState('')
+    const [getPwdValue, setPwdValue] = useState('')
+    const [getConfPwdValue, setConfPwdValue] = useState('')
+    const [getErrorMsg, setErrorMsg] = useState({msg: ''});
+    const [getMobileNumberValue, setMobileNumberValue] = useState('');
+    const [phoneFieldStatus, setphoneFieldStatus] = useState(false);
+    const [getButtonStatus, setButtonStatus] = useState({status: 'disabled'});
 
-
+    const [getFirstNameMsg, setFirstNamemsg] = useState(false)
+    const [getLastNameMsg, setLastNameMsg] = useState(false)
+    const [getEmailMag, setEmailMsg] = useState(false)
+    const [getPwdMsg, setPwdMsg] = useState(false)
+    const [getConfPwdMsg, setConfPwdMsg] = useState(false)
+    const [getMobileNumberMsg, setMobileNumberMsg] = useState(false);
 
     const classes = useStyles();
     let history = useHistory();
 
-    const submitRegisterHandler = () => {
+    const submitRegisterHandler = async () =>{
+        setErrorMsg({msg: ''});
+
+        setFirstNamemsg(false);
+        setLastNameMsg(false);
+        setEmailMsg(false);
+        setPwdMsg(false);
+        setConfPwdMsg(false);
+        setMobileNumberMsg(false);
+
         let formData = {
-            firstName: getFirstNameValue,
-            lastName: getLastNameValue,
-            email: getEmailValue,
-            password: getPwdValue,
-            confPassword: getConfPwdValue,
+            firstName : getFirstNameValue,
+            lastName : getLastNameValue,
+            email : getEmailValue,
+            password : getPwdValue,
+            confirmPassword : getConfPwdValue,
+            mobileNum: getMobileNumberValue,
             usertype: 1
         }
+
         console.log(formData);
 
-        // axios.post(AppGlobal.apiBaseUrl + 'User/', formData)
-        //     .then(res => {
-        //         if (res.data.respondId == 0) {
-        //             setErrorMsg({ msg: res.data.description })
-        //             setUserStatus({ status: 0 })
-        //         } else {
-        //             setErrorMsg({ msg: res.data.description })
-        //             setUserStatus({ status: 1 })
-        //         }
-        //     })
+        try{
+            let result = await axios.post(AppGlobal.apiBaseUrl + 'User',formData);
+            console.log(result);
+            alert(result.data.Description);
+            if(cookies.jwtToken){
+                removeCookie('jwtToken');
+            }
+            setCookie('jwtToken', JSON.stringify(result.data.token));
 
+        }catch (e){
+            console.log(e.response.data);
 
-        debugger;
-        onSignInSubmit();
+            if(!e.response.data.fName){
+                setErrorMsg({msg: e.response.data.Description});
+                setFirstNamemsg(true);
+            }
 
+            if(!e.response.data.lName){
+                setErrorMsg({msg: e.response.data.Description});
+                setLastNameMsg(true);
+            }
+
+            if(!e.response.data.email){
+                setErrorMsg({msg: e.response.data.Description});
+                setEmailMsg(true);
+            }
+
+            if(!e.response.data.pwd){
+                setErrorMsg({msg: e.response.data.Description});
+                setPwdMsg(true);
+            }
+
+            if(!e.response.data.confirmPwd){
+                setErrorMsg({msg: e.response.data.Description});
+                setConfPwdMsg(true);
+            }
+
+            if(!e.response.data.mobileNum){
+                setErrorMsg({msg: e.response.data.Description});
+                setMobileNumberMsg(true);
+            }
+        }
     }
 
-
-    const setUpRecaptcha = () => {
+    const setUpRecaptcha = (phoneNo) => {
         window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recptcha-container', {
             'size': 'invisible',
             'callback': function (response) {
                 // reCAPTCHA solved, allow signInWithPhoneNumber.
-                onSignInSubmit();
+                onSignInSubmit(phoneNo);
             }
         });
     }
 
+    const onSignInSubmit = (phoneNo) => {
 
-    const onSignInSubmit = () => {
-        debugger
+        setUpRecaptcha(phoneNo);
 
-        setUpRecaptcha();
-
-        var phoneNumber = "+94775952461";
+        var phoneNumber = phoneNo;
         var appVerifier = window.recaptchaVerifier;
         firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
             .then(function (confirmationResult) {
@@ -108,19 +151,40 @@ const Register = () => {
                 var code = window.prompt("Enter OTP");
                 confirmationResult.confirm(code).then(function (result) {
                     var user = result.user;
-                    console.log("User signIn " + JSON.stringify(user));
+                    alert('Verification success.')
+                    setButtonStatus({status: ''})
                 }).catch(function (error) {
+                    alert(error.code);
+                    window.location.reload();
                     // User couldn't sign in (bad verification code?)
                     // ...
                 });
-
-
-
             }).catch(function (error) {
-                // Error; SMS not sent
-                // ...
-            });
+                console.log(error);
+                if(typeof error.code !== 'undefined'){
+                    alert(error.code);
+                    window.location.reload();
+                }
+            // Error; SMS not sent
+            // ...
+        });
+    }
 
+    const verifyPhoneNo = () => {
+        if(getMobileNumberValue.mobileNumber == 0){
+            setphoneFieldStatus(true);
+        }else{
+            setphoneFieldStatus(false);
+            let phone  = getMobileNumberValue.replace(/^0+/, '');
+            axios.get('https://api.ipify.org/').then(function (response) {
+                let myIpAddress = response.data;
+                axios.get(`http://api.ipstack.com/${myIpAddress}?access_key=f6c8a6a448c64f19008330fd0afea4f0`).then(function (response) {
+                    let callingCode = '+'+response.data.location.calling_code;
+                    let stdPhoneNo = callingCode+''+phone;
+                    onSignInSubmit(stdPhoneNo);
+                })
+            })
+        }
     }
 
 
@@ -139,6 +203,7 @@ const Register = () => {
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                error = {getFirstNameMsg}
                                 autoComplete="fname"
                                 name="firstName"
                                 variant="outlined"
@@ -152,6 +217,7 @@ const Register = () => {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                error = {getLastNameMsg}
                                 variant="outlined"
                                 required
                                 fullWidth
@@ -164,6 +230,7 @@ const Register = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
+                                error = {getEmailMag}
                                 variant="outlined"
                                 required
                                 fullWidth
@@ -176,6 +243,7 @@ const Register = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
+                                error = {getPwdMsg}
                                 variant="outlined"
                                 required
                                 fullWidth
@@ -189,6 +257,7 @@ const Register = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
+                                error = {getConfPwdMsg}
                                 variant="outlined"
                                 required
                                 fullWidth
@@ -203,6 +272,7 @@ const Register = () => {
 
                         <Grid item xs={12}>
                             <TextField
+                                error = {phoneFieldStatus}
                                 variant="outlined"
                                 required
                                 fullWidth
@@ -211,24 +281,17 @@ const Register = () => {
                                 type="number"
                                 id="mobileNumber"
                                 onChange={event => setMobileNumberValue(event.target.value)}
+                                InputProps={{endAdornment: <Button variant="contained" size="medium" color="primary" className={classes.margin} onClick={verifyPhoneNo}>Verify</Button>}}
                             />
                         </Grid>
-
-
-
-
-
                     </Grid>
-
                     {
-                        (getUserStatus.status == null) ? '' : (
-                            (getUserStatus.status == 1) ?
-                                <div>
-                                    <Alert severity="success">{getErrorMsg.msg}</Alert>
-                                </div> : <div>
-                                    <Alert severity="error">{getErrorMsg.msg}</Alert>
-                                </div>
-                        )
+                        (getErrorMsg.msg == '') ?
+                            '' :
+                            <div>
+                                <br/>
+                                <Alert severity="error">{getErrorMsg.msg}</Alert>
+                            </div>
                     }
 
                     <Button
@@ -237,7 +300,8 @@ const Register = () => {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        onClick={() => submitRegisterHandler()}
+                        onClick={()=>submitRegisterHandler()}
+                        disabled={getButtonStatus.status}
                     >
                         Sign Up
                     </Button>
@@ -248,20 +312,10 @@ const Register = () => {
                             </Link>
                         </Grid>
                     </Grid>
-
-
                     <div id="recptcha-container"></div>
-
                 </form>
             </div>
         </Container>
     );
 }
-
-
-
-
-
-
-
 export default Register;
