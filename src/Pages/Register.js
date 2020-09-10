@@ -46,7 +46,7 @@ const Register = () => {
     const [getPwdValue, setPwdValue] = useState('')
     const [getConfPwdValue, setConfPwdValue] = useState('')
     const [getErrorMsg, setErrorMsg] = useState({msg: ''});
-    const [getMobileNumberValue, setMobileNumberValue] = useState('');
+    const [getMobileNumberValue, setMobileNumberValue] = useState('0');
     const [phoneFieldStatus, setphoneFieldStatus] = useState(false);
     const [getButtonStatus, setButtonStatus] = useState({status: 'disabled'});
 

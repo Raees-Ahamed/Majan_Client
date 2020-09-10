@@ -94,7 +94,11 @@ const useStyles = makeStyles((theme) => ({
                          unitPrice :response.data.originPrice,
                          availableqty :response.data.availableQuantity,
                          defaultPrice: response.data.originPrice,
-                         imageUrl: response.data.imageUrl1
+                         imageUrl: response.data.imageUrl1,
+                         prodId: response.data._id,
+                         catId: response.data.categoryId,
+                         discPercent: response.data.discountPercent,
+                         taxPercent: response.data.taxPercent
                      }
                  ]
 
@@ -136,12 +140,30 @@ const useStyles = makeStyles((theme) => ({
          let qty = getQty.qty;
         if(cookies.cartItems){
             let storedData = cookies.cartItems;
-            newItem = {name:getItemDetails.details[0].name,qty:qty, unitPrice:getItemDetails.details[0].unitPrice, imageUrl:getItemDetails.details[0].imageUrl};
+            newItem = {
+                productId: getItemDetails.details[0].prodId,
+                productName: getItemDetails.details[0].name,
+                categoryId: getItemDetails.details[0].catId,
+                discountPercent: getItemDetails.details[0].discPercent,
+                taxPercent: getItemDetails.details[0].taxPercent,
+                unitPrice: getItemDetails.details[0].defaultPrice,
+                quantity: qty,
+                imageUrl: getItemDetails.details[0].imageUrl
+            };
             storedData.push(newItem);
             setCookie('cartItems', JSON.stringify(storedData));
         }else{
             let cartItems = [];
-            newItem = {name:getItemDetails.details[0].name, qty:qty, unitPrice:getItemDetails.details[0].unitPrice, imageUrl:getItemDetails.details[0].imageUrl};
+            newItem = {
+                productId: getItemDetails.details[0].prodId,
+                productName: getItemDetails.details[0].name,
+                categoryId: getItemDetails.details[0].catId,
+                discountPercent: getItemDetails.details[0].discPercent,
+                taxPercent: getItemDetails.details[0].taxPercent,
+                unitPrice: getItemDetails.details[0].defaultPrice,
+                quantity: qty,
+                imageUrl: getItemDetails.details[0].imageUrl
+            };
             cartItems.push(newItem);
             setCookie('cartItems', JSON.stringify(cartItems));
         }
@@ -174,7 +196,6 @@ const useStyles = makeStyles((theme) => ({
              let foreignPrice = 0;
              let currentItems = [...getItemDetails.details];
              if(event.target.value == 'LKR'){
-                 console.log(getItemDetails.details[0].defaultPrice);
                  foreignPrice = getItemDetails.details[0].defaultPrice * rate;
              }else{
                  foreignPrice = currentItems[0].unitPrice * rate;

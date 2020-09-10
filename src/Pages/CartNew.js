@@ -116,11 +116,11 @@ const CartNew = () => {
                 </TableCell>
 
                 <TableCell>
-                    {x.name}
+                    {x.productName}
                 </TableCell>
 
                 <TableCell>
-                    <TextField id="filled-basic" variant="filled" value={x.qty} onChange={qtyHandler.bind(this, i)}/>
+                    <TextField id="filled-basic" variant="filled" value={x.quantity} onChange={qtyHandler.bind(this, i)}/>
                 </TableCell>
 
                 <TableCell>
@@ -128,7 +128,7 @@ const CartNew = () => {
                 </TableCell>
 
                 <TableCell>
-                    {x.unitPrice*x.qty}
+                    {x.unitPrice*x.quantity}
                 </TableCell>
 
                 <TableCell>
@@ -143,7 +143,7 @@ const CartNew = () => {
     const qtyHandler = (key, event) => {
         let newQty = event.target.value;
         let itemCopy = {...getCartItems.items[key]};
-        itemCopy.qty = newQty;
+        itemCopy.quantity = newQty;
         const itemListCopy = [...getCartItems.items];
         itemListCopy[key] = itemCopy;
         setCartItems({items: itemListCopy});

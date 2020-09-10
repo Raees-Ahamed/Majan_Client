@@ -35,10 +35,11 @@ const Summary = () => {
 
     const getTotalPrice = () =>{
         let total = 0;
-        {cookies.cartItems.map((product) => (
-            total = total + (product.unitPrice*product.qty)
-        ))}
-        console.log(total);
+        if(typeof(cookies.cartItems) !== 'undefined'){
+            {cookies.cartItems.map((product) => (
+                total = total + (product.unitPrice*product.quantity)
+            ))}
+        }
         return total;
     }
 
@@ -48,12 +49,16 @@ const Summary = () => {
                 Order summary
             </Typography>
             <List disablePadding>
-                {cookies.cartItems.map((product) => (
-                    <ListItem className={classes.listItem} key={product.name}>
-                        <ListItemText primary={product.name} style={{'width':'50px'}}/>
-                        <Typography variant="body2">Rs {product.unitPrice} X {product.qty}</Typography>
-                    </ListItem>
-                ))}
+                {
+                    (typeof(cookies.cartItems) !== 'undefined') ? (
+                            cookies.cartItems.map((product) => (
+                            <ListItem className={classes.listItem} key={product.productName}>
+                                <ListItemText primary={product.productName} style={{'width':'50px'}}/>
+                                <Typography variant="body2">Rs {product.unitPrice} X {product.quantity}</Typography>
+                            </ListItem>
+                        ))
+                    ) : null
+                }
                 <ListItem className={classes.listItem}>
                     <ListItemText primary="Total Price" />
                     <Typography variant="subtitle1" className={classes.total}>

@@ -68,21 +68,21 @@ const NavigationHeader = (props) => {
                 <Toolbar className={classes.toolbar}>
                     <Link variant="h6" color="inherit" noWrap className={classes.toolbarTitle} href="javascript:void(0)"  onClick={() => history.push("/")}>
                         Majang.lk
-                            <IconButton edge="start" color="inherit" aria-label="menu" className={classes.menuButton} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                            <MenuIcon />
-                        </IconButton>
+                        {/*    <IconButton edge="start" color="inherit" aria-label="menu" className={classes.menuButton} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>*/}
+                        {/*    <MenuIcon />*/}
+                        {/*</IconButton>*/}
 
-                        <Menu
-                            id="simple-menu"
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}
-                        >
-                            <MenuItem onClick={handleClose}>Paints</MenuItem>
-                            <MenuItem onClick={handleClose}>Spare parts</MenuItem>
-                            <MenuItem onClick={handleClose}>Stickers</MenuItem>
-                        </Menu>
+                        {/*<Menu*/}
+                        {/*    id="simple-menu"*/}
+                        {/*    anchorEl={anchorEl}*/}
+                        {/*    keepMounted*/}
+                        {/*    open={Boolean(anchorEl)}*/}
+                        {/*    onClose={handleClose}*/}
+                        {/*>*/}
+                        {/*    <MenuItem onClick={handleClose}>Paints</MenuItem>*/}
+                        {/*    <MenuItem onClick={handleClose}>Spare parts</MenuItem>*/}
+                        {/*    <MenuItem onClick={handleClose}>Stickers</MenuItem>*/}
+                        {/*</Menu>*/}
                     </Link>
                     <nav>
                         <IconButton aria-label="cart" onClick={() => history.push("/cartNew")}>

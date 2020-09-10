@@ -199,11 +199,11 @@ const GridItems = (props) =>{
                 </Grid>
             </Container>
 
-            <Container maxWidth={false} style={{'float':'right'}}>
-                <div className={classes.paginationMargin}>
-                    <Pagination count={getItems.products.length} page={page} color="primary" onChange={handlePagination}/>
-                </div>
-            </Container>
+            {/*<Container maxWidth={false} style={{'float':'right'}}>*/}
+            {/*    <div className={classes.paginationMargin}>*/}
+            {/*        <Pagination count={getItems.products.length} page={page} color="primary" onChange={handlePagination}/>*/}
+            {/*    </div>*/}
+            {/*</Container>*/}
         </React.Fragment>
     )
 }

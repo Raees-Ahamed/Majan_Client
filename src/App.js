@@ -13,9 +13,8 @@ import GlobalData from './Components/Global/Global';
 import { useCookies } from 'react-cookie';
 import CartNew from "./Pages/CartNew";
 import Contact from "./Pages/Contact";
-import Cart from "./Components/Cart/Cart";
 
-const App = (props) => {
+const App = () => {
 
     const [cookies, setCookie] = useCookies(['cartItems']);
 
