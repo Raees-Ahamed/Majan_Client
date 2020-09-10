@@ -90,23 +90,26 @@ const NavigationHeader = (props) => {
                                 <ShoppingCartIcon />
                             </StyledBadge>
                         </IconButton>
-                        <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() =>history.push("/")}>
+                        <Link variant="button" color="textPrimary" href="#" className={classes.link} onClick={() =>history.push("/")}>
                             Home
                         </Link>
-                        <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() => history.push("/shop")}>
+                        <Link variant="button" color="textPrimary" href="#" className={classes.link} onClick={() => history.push("/shop")}>
                             Shop
                         </Link>
-                        <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() => history.push("/login")}>
+                        <Link variant="button" color="textPrimary" href="#" className={classes.link} onClick={() => history.push("/login")}>
                             Login
                         </Link>
-                        <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() => history.push("/register")}>
+                        <Link variant="button" color="textPrimary" href="#" className={classes.link} onClick={() => history.push("/register")}>
                             Register
                         </Link>
-                        <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() => history.push("/checkout")}>
+                        <Link variant="button" color="textPrimary" href="#" className={classes.link} onClick={() => history.push("/checkout")}>
                             Checkout
                         </Link>
-                        <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() => history.push("/contact")}>
+                        <Link variant="button" color="textPrimary" href="#" className={classes.link} onClick={() => history.push("/contact")}>
                             Contact
+                        </Link>
+                        <Link variant="button" color="textPrimary" href="#" className={classes.link} onClick={() => history.push("/orderhistory")}>
+                            Order History
                         </Link>
                     </nav>
                 </Toolbar>
