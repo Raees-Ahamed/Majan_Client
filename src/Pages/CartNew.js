@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
         maxHeight: 440,
     },
-    curveBtn:{
+    curveBtn: {
         borderRadius: "5em"
     }
 }));
@@ -91,9 +91,9 @@ const CartNew = () => {
 
     const classes = useStyles();
 
-    const [getCartItems, setCartItems] = useState({items: cookies.cartItems});
+    const [getCartItems, setCartItems] = useState({ items: cookies.cartItems });
 
-    const {value,setValue} = useContext(GlobalData);
+    const { value, setValue } = useContext(GlobalData);
 
     const [open, setOpen] = React.useState(false);
 
@@ -120,7 +120,7 @@ const CartNew = () => {
                 </TableCell>
 
                 <TableCell>
-                    <TextField id="filled-basic" variant="filled" value={x.qty} onChange={qtyHandler.bind(this, i)}/>
+                    <TextField id="standard-basic"  value={x.qty} onChange={qtyHandler.bind(this, i)} />
                 </TableCell>
 
                 <TableCell>
@@ -128,7 +128,7 @@ const CartNew = () => {
                 </TableCell>
 
                 <TableCell>
-                    {x.unitPrice*x.qty}
+                    {x.unitPrice * x.qty}
                 </TableCell>
 
                 <TableCell>
@@ -142,25 +142,25 @@ const CartNew = () => {
 
     const qtyHandler = (key, event) => {
         let newQty = event.target.value;
-        let itemCopy = {...getCartItems.items[key]};
+        let itemCopy = { ...getCartItems.items[key] };
         itemCopy.qty = newQty;
         const itemListCopy = [...getCartItems.items];
         itemListCopy[key] = itemCopy;
-        setCartItems({items: itemListCopy});
+        setCartItems({ items: itemListCopy });
         setCookie('cartItems', JSON.stringify(itemListCopy));
     }
 
     const removeItemHandler = () => {
         setOpen(false);
         let itemsCopy = [...getCartItems.items];
-        itemsCopy.splice(getKey,1);
-        setCartItems({items: itemsCopy});
+        itemsCopy.splice(getKey, 1);
+        setCartItems({ items: itemsCopy });
         setCookie('cartItems', JSON.stringify(itemsCopy));
-        if(itemsCopy.length == 0){
+        if (itemsCopy.length == 0) {
             removeCookie('cartItems');
         }
         setValue({
-            totalItems:  itemsCopy.length
+            totalItems: itemsCopy.length
         })
     }
 
@@ -198,7 +198,7 @@ const CartNew = () => {
                                 getCartItems.items.map((x, i) =>
                                     row(x, i)
                                 )
-                            ) : 'Empty Cart'
+                            ) : <div align='center'>Cart is empty</div>
                         }
                     </TableBody>
                 </Table>
@@ -230,15 +230,15 @@ const CartNew = () => {
 }
 
 const BtnSeeMoreStyle = styled(Button)({
-    backgroundColor:'#A749FF',
+    backgroundColor: '#A749FF',
     border: 0,
     borderRadius: "5em",
     boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
     color: 'white',
     height: 35,
     padding: '0 30px',
-    maxWidth:'50%',
-    
-  });
+    maxWidth: '50%',
+
+});
 
 export default CartNew;
