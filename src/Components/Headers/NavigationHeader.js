@@ -108,6 +108,9 @@ const NavigationHeader = (props) => {
                         <Link variant="button" color="textPrimary" href="javascript:void(0)" className={classes.link} onClick={() => history.push("/contact")}>
                             Contact
                         </Link>
+                        <Link variant="button" color="textPrimary" href="#" className={classes.link} onClick={() => history.push("/orderhistory")}>
+                            Order History
+                        </Link>
                     </nav>
                 </Toolbar>
             </AppBar>
