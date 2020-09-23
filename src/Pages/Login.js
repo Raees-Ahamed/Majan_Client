@@ -19,7 +19,7 @@ import { useCookies } from 'react-cookie';
 
 const useStyles = makeStyles((theme) => ({
     image: {
-        backgroundImage: 'url(https://source.unsplash.com/random)',
+        backgroundImage: 'url(https://firebasestorage.googleapis.com/v0/b/webapi-react.appspot.com/o/Login%2Fshopping-4424344_1280.jpg?alt=media&token=f563cb70-a647-486f-918c-74141a733721)',
         backgroundRepeat: 'no-repeat',
         backgroundColor:
             theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],

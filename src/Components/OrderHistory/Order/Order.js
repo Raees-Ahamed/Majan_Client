@@ -1,24 +1,3 @@
-// import React, {Component} from 'react';
-// import OrderItem from '../OrderItems/OrderItems';
-// import PropTypes from 'prop-types';
-//
-// class Order extends Component {
-//
-//     render() {
-//         const {orderItems} = this.props;
-//         return(
-//             <div>
-//                 <label>OrderId: #{orderItems._id}</label>
-//                 <OrderItem item={orderItems}/>
-//             </div>
-//         );
-//     }
-// }
-//
-// Order.propTypes = {
-//     orderItems: PropTypes.object.isRequired
-// }
-
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
@@ -42,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 const Order = (props) => {
     const classes = useStyles();
 
-    const {orderItems} = props;
+    const { orderItems } = props;
 
     console.log(orderItems.items[0]);
 
@@ -60,9 +39,12 @@ const Order = (props) => {
                     <Typography>
                         <ul>
                             <li>
+                                <strong>Item:</strong> {orderItems.items[0].productName}
+                            </li>
+                            <li>
                                 <strong>Creared Date:</strong> {orderItems.items[0].createdAt}
                             </li>
-                                <strong>Unit Price:</strong> {orderItems.items[0].unitPrice}
+                            <strong>Unit Price:</strong> {orderItems.items[0].unitPrice}
                             <li>
                                 <strong>Quantity:</strong> {orderItems.items[0].quantity}
                             </li>
