@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Route, Switch, useLocation } from "react-router-dom";
+import React,{useState, useEffect} from 'react';
+import {Route, Switch, useLocation } from "react-router-dom";
 import Home from "./Pages/Home";
 import Shop from "./Pages/Shop";
 import Login from "./Pages/Login";
@@ -9,15 +9,16 @@ import Cookie from "./Pages/Cookies";
 import SingleItem from "./Pages/SingleItem";
 import NavigationHeader from "./Components/Headers/NavigationHeader";
 import Footer from "./Components/Footer/Footer";
-import GlobalData from "./Components/Global/Global";
-import { useCookies } from "react-cookie";
+import GlobalData from './Components/Global/Global';
+import { useCookies } from 'react-cookie';
 import CartNew from "./Pages/CartNew";
 import Contact from "./Pages/Contact";
-import Cart from "./Components/Cart/Cart";
 import OrderHistory from "./Pages/OrderHistory";
 import { CookiesProvider } from "react-cookie";
 
-const App = (props) => {
+
+const App = () => {
+
   const [cookies, setCookie] = useCookies(["cartItems"]);
 
   const [value, setValue] = useState({
